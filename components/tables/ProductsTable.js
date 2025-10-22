@@ -1,0 +1,91 @@
+"use client";
+
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { PencilIcon, Trash2Icon } from "lucide-react";
+import { Card } from "@/components/ui/card";
+
+
+export function ProductsTable({
+    rows,
+    onEdit,
+    onDelete
+}) {
+    console.log(rows)
+    return (
+        <Card className="w-full p-3 animate-fadeSlideIn" >
+            <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead className="w-[60px]">Foto</TableHead>
+                        <TableHead>SKU</TableHead>
+                        <TableHead>Nome</TableHead>
+                        <TableHead className="text-center">Quantidade</TableHead>
+                        <TableHead>Embalagem</TableHead>
+                        <TableHead>Fornecedor</TableHead>
+                        <TableHead>Custo</TableHead>
+                        <TableHead>NCM</TableHead>
+                        <TableHead>CEST</TableHead>
+                        <TableHead className="text-right w-[120px]">Ações</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {rows.map((item) => (
+                        <TableRow
+                            key={item.id}
+                            className="cursor-pointer" >
+                            <TableCell>
+                                <Avatar className="size-10">
+                                    <AvatarImage src={item.image} alt={item.name} />
+                                    <AvatarFallback>{item.name.charAt(0)}</AvatarFallback>
+                                </Avatar>
+                            </TableCell>
+                            <TableCell className="font-mono text-sm">{item.sku}</TableCell>
+                            <TableCell className="font-medium">{item.name}</TableCell>
+                            <TableCell className="text-center font-medium">{item.quantity}</TableCell>
+                            <TableCell className="text-muted-foreground">{item.package}</TableCell>
+                            <TableCell className="text-muted-foreground">{item.supplier}</TableCell>
+                            <TableCell className="font-medium">{item.cost}</TableCell>
+                            <TableCell className="font-mono text-sm text-muted-foreground">{item.ncm}</TableCell>
+                            <TableCell className="font-mono text-sm text-muted-foreground">{item.cest}</TableCell>
+                            <TableCell className="text-right">
+                                <div className="flex items-center justify-end gap-2">
+                                    <Button
+                                        variant="ghost"
+                                        size="icon-sm"
+                                        className="size-8"
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            onEdit?.(item)
+                                        }}
+                                    >
+                                        <PencilIcon className="size-4" />
+                                    </Button>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon-sm"
+                                        className="size-8 text-destructive hover:text-destructive"
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            onDelete?.(item)
+                                        }}
+                                    >
+                                        <Trash2Icon className="size-4" />
+                                    </Button>
+                                </div>
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </Card>
+    )
+}
