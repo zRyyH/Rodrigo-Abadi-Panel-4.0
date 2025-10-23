@@ -28,7 +28,7 @@ export function SuppliersTable({ rows, onRemove }) {
                             key={supplier.id}
                             className="cursor-pointer"
                         >
-                            <TableCell className="font-medium">{supplier.name}</TableCell>
+                            <TableCell className="font-medium">{supplier.supplierName}</TableCell>
                             <TableCell className="text-right">
                                 <Button
                                     variant="ghost"

@@ -4,7 +4,7 @@ import { TableSearch } from "@/components/sections/TableSearch";
 import { ProductsTable } from "@/components/tables/ProductsTable";
 import { productsService } from "@/services/products";
 
-export default function Sales() {
+export default function Products() {
     return (
         <TableSearch service={productsService} collection={"products"} >
             <ProductsTable />

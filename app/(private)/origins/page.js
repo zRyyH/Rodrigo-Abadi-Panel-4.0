@@ -1,23 +1,13 @@
 "use client";
 
-import OriginsTable from "@/components/tables/OriginsTable";
+import { OriginsTable } from "@/components/tables/OriginsTable";
+import { TableSearch } from "@/components/sections/TableSearch";
+import { originsService } from "@/services/origins";
 
-export default function Origins() {
-    const origins = [
-        {
-            id: 1,
-            origin: "Fornecedor ABC Ltda"
-        }
-    ]
-
-    function onRemove(origin) {
-        console.log("Deletar origin:", origin)
-    }
-
+export default function Packages() {
     return (
-        <OriginsTable
-            origins={origins}
-            onRemove={onRemove}
-        />
-    )
+        <TableSearch service={originsService} collection={"origins"} >
+            <OriginsTable />
+        </TableSearch>
+    );
 }

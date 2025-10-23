@@ -1,23 +1,13 @@
 "use client";
 
-import SuppliersTable from "@/components/tables/SuppliersTable";
+import { SuppliersTable } from "@/components/tables/SuppliersTable";
+import { TableSearch } from "@/components/sections/TableSearch";
+import { suppliersService } from "@/services/suppliers";
 
-export default function Suppliers() {
-    const suppliers = [
-        {
-            id: 1,
-            name: "Fornecedor ABC Ltda"
-        }
-    ]
-
-    function onRemove(supplier) {
-        console.log("Deletar fornecedor:", supplier)
-    }
-
+export default function Sales() {
     return (
-        <SuppliersTable
-            suppliers={suppliers}
-            onRemove={onRemove}
-        />
-    )
+        <TableSearch service={suppliersService} collection={"suppliers"} >
+            <SuppliersTable />
+        </TableSearch>
+    );
 }
