@@ -7,11 +7,11 @@ import PageCard from "@/components/common/PageCard";
 
 export default function Products() {
     return (
-        <div className="gap-4 flex flex-col">
+        <div className="gap-4 flex flex-col animate-fadeSlideIn">
             <PageCard
-                title="Vendas"
-                redirect="/upload"
-                buttonText="Criar Venda"
+                title="Produtos"
+                redirect="/products/create"
+                buttonText="Criar Produto"
             />
             <TableSearch service={productsService} collection={"products"} >
                 <ProductsTable />

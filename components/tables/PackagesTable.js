@@ -12,8 +12,13 @@ import {
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card";
 import { EmptyTable } from "./Empty";
+import { TableLoading } from "@/components/common/TableLoading";
 
-export function PackagesTable({ rows, onRemove }) {
+export function PackagesTable({ rows, onRemove, loading }) {
+    if (loading) {
+        return <TableLoading columns={[]} message="Carregando..." />;
+    }
+    
     if (rows.length < 1) return <EmptyTable />
 
     return (

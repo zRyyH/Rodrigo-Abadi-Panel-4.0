@@ -13,12 +13,18 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { PencilIcon, Trash2Icon } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { EmptyTable } from "./Empty";
+import { TableLoading } from "@/components/common/TableLoading";
 
 export function ProductsTable({
     rows,
     onEdit,
-    onDelete
+    onDelete,
+    loading
 }) {
+    if (loading) {
+        return <TableLoading columns={[]} message="Carregando..." />;
+    }
+
     if (rows.length < 1) return <EmptyTable />
 
     return (

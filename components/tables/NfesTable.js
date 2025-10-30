@@ -12,8 +12,13 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FileTextIcon, FileCodeIcon } from "lucide-react";
 import { EmptyTable } from "./Empty";
+import { TableLoading } from "@/components/common/TableLoading";
 
-export function NfesTable({ rows = [], onRowClick, onDownloadPdf, onDownloadXml }) {
+export function NfesTable({ rows = [], onRowClick, onDownloadPdf, onDownloadXml, loading }) {
+    if (loading) {
+        return <TableLoading columns={[]} message="Carregando..." />;
+    }
+    
     if (rows.length < 1) return <EmptyTable />
 
     const isValidFile = (file) => {

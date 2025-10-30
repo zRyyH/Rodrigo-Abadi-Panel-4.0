@@ -10,8 +10,13 @@ import {
 } from "@/components/ui/table";
 import { Card } from "@/components/ui/card";
 import { EmptyTable } from "./Empty";
+import { TableLoading } from "@/components/common/TableLoading";
 
-export function SalesTable({ rows, onRowClick }) {
+export function SalesTable({ rows, onRowClick, loading }) {
+    if (loading) {
+        return <TableLoading columns={[]} message="Carregando..." />;
+    }
+
     if (rows.length < 1) return <EmptyTable />
 
     return (

@@ -5,26 +5,30 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { FileText, FileCode, Package } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { LoadingScreen } from "@/components/common/PageLoading";
 
 export default function SaleView({
     product = {},
-    saleNumber = "",
+    sale_id = "",
     date = "",
-    buyerName = "",
-    shippingData = "",
-    shippingData2 = "",
-    fiscalNoteNumber = "",
-    totalPrice = "",
-    shippingRevenue = "",
-    shippingCost = "",
-    taxes = "",
-    total = "",
+    buyer_name = "",
+    state = "",
+    status_description = "",
+    invoice_number = "",
+    product_revenue = "",
+    shipping_revenue = "",
+    shipping_fees = "",
+    sales_fee_and_taxes = "",
+    total_amount = "",
     profit = "",
-    pdfUrl = "",
-    xmlUrl = ""
+    pdf_url = "",
+    xml_url = "",
+    loading
 }) {
-    const isPdfValid = pdfUrl?.trim();
-    const isXmlValid = xmlUrl?.trim();
+    if (loading) return <LoadingScreen />
+
+    const isPdfValid = pdf_url?.trim();
+    const isXmlValid = xml_url?.trim();
 
     return (
         <div className="w-full p-6 space-y-6">
@@ -34,16 +38,18 @@ export default function SaleView({
                 <div className="flex gap-2">
                     <Button
                         variant="outline"
-                        onClick={() => window.location.href = pdfUrl}
+                        onClick={() => window.location.href = pdf_url}
                         disabled={!isPdfValid}
+                        className="cursor-pointer"
                     >
                         <FileText />
                         PDF
                     </Button>
                     <Button
                         variant="outline"
-                        onClick={() => window.location.href = xmlUrl}
+                        onClick={() => window.location.href = xml_url}
                         disabled={!isXmlValid}
+                        className="cursor-pointer"
                     >
                         <FileCode />
                         XML
@@ -88,12 +94,12 @@ export default function SaleView({
                     <CardTitle>Informações da Venda</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                    <InfoRow label="Número da venda" value={saleNumber} />
+                    <InfoRow label="Número da venda" value={sale_id} />
                     <InfoRow label="Data" value={date} />
-                    <InfoRow label="Apelido comprador" value={buyerName} />
-                    <InfoRow label="Dados de envio" value={shippingData} />
-                    <InfoRow label="Dados de envio" value={shippingData2} />
-                    <InfoRow label="Número da nota fiscal" value={fiscalNoteNumber} />
+                    <InfoRow label="Apelido comprador" value={buyer_name} />
+                    <InfoRow label="Dados de envio" value={state} />
+                    <InfoRow label="Dados de envio" value={status_description} />
+                    <InfoRow label="Número da nota fiscal" value={invoice_number} />
                 </CardContent>
             </Card>
 
@@ -103,12 +109,12 @@ export default function SaleView({
                     <CardTitle>Resumo Financeiro</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                    <InfoRow label="Preço total dos produtos" value={totalPrice} />
-                    <InfoRow label="Receita por envio" value={shippingRevenue} />
-                    <InfoRow label="Custo envio" value={shippingCost} />
-                    <InfoRow label="Impostos e tarifas" value={taxes} />
+                    <InfoRow label="Preço total dos produtos" value={product_revenue} />
+                    <InfoRow label="Receita por envio" value={shipping_revenue} />
+                    <InfoRow label="Custo envio" value={shipping_fees} />
+                    <InfoRow label="Impostos e tarifas" value={sales_fee_and_taxes} />
                     <Separator />
-                    <InfoRow label="Total" value={total} bold />
+                    <InfoRow label="Total" value={total_amount} bold />
                     <InfoRow label="Lucro" value={profit} bold />
                 </CardContent>
             </Card>

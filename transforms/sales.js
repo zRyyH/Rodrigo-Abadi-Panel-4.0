@@ -9,13 +9,17 @@ export function transformSale(sale) {
 };
 
 export function transformSaleView(sale) {
+    console.log(sale)
+
     return {
+        ...sale,
         product: {
             imageUrl: `${DIRECTUS_BASE_URL}/assets/${sale?.product_id?.photo_ids?.[0]?.directus_files_id}`,
             name: sale?.product_id?.name,
             value: formatarReal(sale?.product_id?.purchase_cost),
             quantity: sale?.units
         },
+        invoice_number: sale?.nfe_id?.invoice_number,
         xml_url: `${DIRECTUS_BASE_URL}/assets/${sale?.nfe_id?.xml_id?.id}`,
         pdf_url: `${DIRECTUS_BASE_URL}/assets/${sale?.nfe_id?.pdf_id?.id}`,
         date: formatarData(sale?.sale_date),

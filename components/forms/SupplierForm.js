@@ -5,36 +5,52 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export default function SupplierForm({ mode = "create", value, formData, setFormData, onSubmit, onCancel }) {
+export default function SupplierForm({
+    formData = {},
+    setFormData,
+    onSubmit,
+    onCancel,
+    loading = false,
+    mode = "create"
+}) {
     const isEditMode = mode === "edit";
 
+    const handleChange = (value) => {
+        setFormData({ ...formData, supplier_name: value });
+    };
+
     return (
-        <Card className="animate-fadeSlideIn" >
+        <Card>
             <CardHeader>
                 <CardTitle>{isEditMode ? "Editar Fornecedor" : "Criar Fornecedor"}</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
-                <div className="space-y-2">
-                    <Label htmlFor="supplier">
-                        Fornecedor <span className="text-destructive">*</span>
-                    </Label>
-                    <Input
-                        id="supplier"
-                        placeholder="Digite a Fornecedor..."
-                        className="w-full"
-                        value={value}
-                        onChange={(e) => setFormData({ ...formData, supplier_name: e.target.value })}
-                    />
-                </div>
+            <CardContent>
+                <form onSubmit={onSubmit} className="space-y-6">
+                    <div className="space-y-2">
+                        <Label htmlFor="supplier">
+                            Fornecedor <span className="text-destructive">*</span>
+                        </Label>
+                        <Input
+                            id="supplier"
+                            placeholder="Digite o fornecedor..."
+                            value={formData.supplier_name || ""}
+                            onChange={(e) => handleChange(e.target.value)}
+                            disabled={loading}
+                            required
+                        />
+                    </div>
 
-                <div className="flex gap-3">
-                    <Button onClick={onSubmit} className="cursor-pointer">
-                        {isEditMode ? "Salvar" : "Criar"}
-                    </Button>
-                    <Button variant="outline" onClick={onCancel} className="cursor-pointer">
-                        Cancelar
-                    </Button>
-                </div>
+                    <div className="flex gap-3">
+                        <Button type="submit" disabled={loading}>
+                            {loading ? "Salvando..." : isEditMode ? "Salvar" : "Criar"}
+                        </Button>
+                        {onCancel && (
+                            <Button type="button" variant="outline" onClick={onCancel} disabled={loading}>
+                                Cancelar
+                            </Button>
+                        )}
+                    </div>
+                </form>
             </CardContent>
         </Card>
     );

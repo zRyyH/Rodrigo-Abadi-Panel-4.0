@@ -13,9 +13,14 @@ import { Card } from "@/components/ui/card";
 import { useRouter } from 'next/navigation';
 import { Trash2 } from "lucide-react";
 import { EmptyTable } from "./Empty";
+import { TableLoading } from "@/components/common/TableLoading";
 
-export function InvoicesTable({ rows, onDelete }) {
+export function InvoicesTable({ rows, onDelete, loading }) {
     const router = useRouter();
+
+    if (loading) {
+        return <TableLoading columns={[]} message="Carregando..." />;
+    }
 
     if (rows.length < 1) return <EmptyTable />
 

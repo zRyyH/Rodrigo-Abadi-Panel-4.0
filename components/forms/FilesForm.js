@@ -1,10 +1,10 @@
 "use client";
 
-import { UploadIcon, CheckCircle2Icon, FileIcon, FileSpreadsheetIcon, FileArchiveIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { UploadIcon, CheckCircle2Icon, FileSpreadsheetIcon, FileArchiveIcon } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
 const fileInputs = [
@@ -38,7 +38,16 @@ const fileInputs = [
     },
 ];
 
-export function FileUploadForm({ files, onFileChange, onSubmit, loading }) {
+export default function FilesForm({
+    formData = {},
+    setFormData,
+    onSubmit,
+    loading = false
+}) {
+    const handleFileChange = (fileId, file) => {
+        setFormData({ ...formData, [fileId]: file });
+    };
+
     return (
         <Card className="shadow-lg">
             <CardHeader className="space-y-1">
@@ -52,7 +61,7 @@ export function FileUploadForm({ files, onFileChange, onSubmit, loading }) {
                     <div className="grid gap-4">
                         {fileInputs.map((input) => {
                             const Icon = input.icon;
-                            const hasFile = files[input.id];
+                            const hasFile = formData[input.id];
 
                             return (
                                 <div key={input.id} className="space-y-2">
@@ -87,11 +96,13 @@ export function FileUploadForm({ files, onFileChange, onSubmit, loading }) {
                                         <div className="flex-1 min-w-0">
                                             <div className="flex items-center gap-2">
                                                 <p className="text-sm font-medium">
-                                                    {hasFile ? files[input.id].name : "Selecionar arquivo"}
+                                                    {hasFile ? formData[input.id].name : "Selecionar arquivo"}
                                                 </p>
                                             </div>
                                             <p className="text-xs text-muted-foreground mt-0.5">
-                                                {hasFile ? `${(files[input.id].size / 1024).toFixed(1)} KB` : input.description}
+                                                {hasFile
+                                                    ? `${(formData[input.id].size / 1024).toFixed(1)} KB`
+                                                    : input.description}
                                             </p>
                                         </div>
 
@@ -106,7 +117,7 @@ export function FileUploadForm({ files, onFileChange, onSubmit, loading }) {
                                             type="file"
                                             accept={input.accept}
                                             className="hidden"
-                                            onChange={(e) => onFileChange(input.id, e.target.files[0])}
+                                            onChange={(e) => handleFileChange(input.id, e.target.files?.[0])}
                                             disabled={loading}
                                         />
                                     </label>

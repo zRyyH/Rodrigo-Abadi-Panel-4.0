@@ -14,7 +14,7 @@ export default function Sales() {
     }
 
     return (
-        <div className="gap-4 flex flex-col">
+        <div className="gap-4 flex flex-col animate-fadeSlideIn">
             <PageCard
                 title="Vendas"
                 redirect="/upload"

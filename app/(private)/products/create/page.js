@@ -1,61 +1,51 @@
 "use client";
 
-import { useRouter } from 'next/navigation';
-import { useState } from "react";
+import FormManager from "@/components/forms/FormManager";
 import ProductForm from "@/components/forms/ProductForm";
+import { productsService } from "@/services/products";
 
-export default function CreateProducts() {
-    const router = useRouter();
-    const [formData, setFormData] = useState({});
-
-    const handleInputChange = (field, value) => {
-        setFormData((prev) => ({ ...prev, [field]: value }));
-    };
-
-    const handleImageUpload = (e) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setFormData((prev) => ({ ...prev, image: reader.result }));
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
-    const handleRemoveImage = () => {
-        setFormData((prev) => ({ ...prev, image: null }));
-    };
-
-    function onCancel() {
-        setFormData({})
-        router.push("/products")
-    };
-
-    function onSubmit() {
-        console.log(formData)
-    };
-
+export default function CreateProductPage() {
     const packagingOptions = [
-        { value: "box", label: "Caixa" },
-        { value: "bag", label: "Sacola" },
+        { value: 13, label: "Caixa" },
+        { value: 14, label: "Pacote" },
+        { value: 15, label: "Unidade" },
     ];
 
     const supplierOptions = [
-        { value: "supplier1", label: "Fornecedor 1" },
-        { value: "supplier2", label: "Fornecedor 2" },
+        { value: 8, label: "Fornecedor A Ltda" },
+        { value: 9, label: "Fornecedor B S/A" },
+        { value: 10, label: "Fornecedor C EIRELI" },
     ];
 
     return (
-        <ProductForm
-            formData={formData}
-            onInputChange={handleInputChange}
-            onImageUpload={handleImageUpload}
-            onRemoveImage={handleRemoveImage}
-            onSubmit={onSubmit}
-            onCancel={onCancel}
-            packagingOptions={packagingOptions}
-            supplierOptions={supplierOptions}
-        />
+        <div className="container mx-auto py-8 animate-fadeSlideIn">
+            <FormManager
+                queryKey="products"
+                createFn={productsService.create}
+                redirectTo="/products"
+                initialData={{
+                    name: "",
+                    sku: "",
+                    quantity: "",
+                    purchase_cost: "",
+                    package_id: "",
+                    supplier_id: "",
+                    cest: "",
+                    ncm: "",
+                    photo_ids: null
+                }}
+                onSuccess={(data) => {
+                    console.log('Product created successfully:', data);
+                }}
+                onError={(error) => {
+                    console.error('Error creating product:', error);
+                }}
+            >
+                <ProductForm
+                    packagingOptions={packagingOptions}
+                    supplierOptions={supplierOptions}
+                />
+            </FormManager>
+        </div>
     );
 }

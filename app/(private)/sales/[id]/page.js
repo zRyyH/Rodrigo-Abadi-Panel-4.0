@@ -8,12 +8,12 @@ import { useParams } from "next/navigation";
 export default function Sale() {
     const params = useParams();
 
-    const { data } = useQuery({
+    const { data, isPending } = useQuery({
         queryKey: ["sale", params.id],
         queryFn: () => salesService.getById(params.id),
     });
 
     return (
-        <SaleView {...data} />
+        <SaleView {...data} loading={isPending} />
     )
 }

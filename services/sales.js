@@ -9,14 +9,15 @@ export const salesService = {
         const params = directusToAxiosParams({
             fields: ['*'],
             search,
-        })
+        });
 
         const { data } = await directus.get('/items/sales', { params });
         return transformData(data?.data, transformSale);
     },
     getById: async (id) => {
-        const { data } = await directus.get(`/items/sales/${id}`);
-        return data?.data
+        const params = directusToAxiosParams({ fields: ['*.*.*'] });
+        const { data } = await directus.get(`/items/sales/${id}`, { params });
+        return transformSaleView(data?.data);
     },
     create: async (data) => {
         return await directus.post('/items/sales', data);

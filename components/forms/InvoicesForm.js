@@ -1,115 +1,131 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Field, FieldGroup } from "@/components/ui/field";
 
 export default function InvoicesForm({
-    formData,
+    formData = {},
     setFormData,
     onSubmit,
     onCancel,
-    origin_ids = []
+    loading = false,
+    originOptions = []
 }) {
+    const handleChange = (field, value) => {
+        setFormData({ ...formData, [field]: value });
+    };
+
     return (
-        <Card className="animate-fadeSlideIn">
+        <Card>
             <CardHeader>
                 <CardTitle>Criar Notas</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
-                <div className="space-y-4">
-                    <div className="space-y-2">
-                        <Label htmlFor="product_name">
-                            Nome do produto <span className="text-destructive">*</span>
-                        </Label>
-                        <Input
-                            id="product_name"
-                            placeholder="Digite o nome do produto..."
-                            className="w-full"
-                            value={formData.product_name || ""}
-                            onChange={(e) => setFormData({ ...formData, product_name: e.target.value })}
-                        />
-                    </div>
+            <CardContent>
+                <form onSubmit={onSubmit} className="space-y-6">
+                    <FieldGroup>
+                        <div className="space-y-2">
+                            <Label htmlFor="product_name">
+                                Nome do produto <span className="text-destructive">*</span>
+                            </Label>
+                            <Input
+                                id="product_name"
+                                placeholder="Digite o nome do produto..."
+                                value={formData.product_name || ""}
+                                onChange={(e) => handleChange("product_name", e.target.value)}
+                                disabled={loading}
+                                required
+                            />
+                        </div>
 
-                    <div className="space-y-2">
-                        <Label htmlFor="quantity">
-                            Quantidade <span className="text-destructive">*</span>
-                        </Label>
-                        <Input
-                            id="quantity"
-                            placeholder="Digite a quantidade..."
-                            className="w-full"
-                            value={formData.quantity || ""}
-                            onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
-                        />
-                    </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="quantity">
+                                Quantidade <span className="text-destructive">*</span>
+                            </Label>
+                            <Input
+                                id="quantity"
+                                type="number"
+                                placeholder="Digite a quantidade..."
+                                value={formData.quantity || ""}
+                                onChange={(e) => handleChange("quantity", e.target.value)}
+                                disabled={loading}
+                                required
+                            />
+                        </div>
 
-                    <div className="space-y-2">
-                        <Label htmlFor="origin_id">
-                            Origem <span className="text-destructive">*</span>
-                        </Label>
-                        <Select
-                            value={formData.origin_id || ""}
-                            onValueChange={(value) => setFormData({ ...formData, origin_id: value })}
-                        >
-                            <SelectTrigger id="origin_id" className="w-[180px]">
-                                <SelectValue placeholder="Selecionar item..." />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value={36}>Nacional</SelectItem>
-                                <SelectItem value={37}>Importado</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="origin_id">
+                                Origem <span className="text-destructive">*</span>
+                            </Label>
+                            <Select
+                                value={formData.origin_id?.toString() || ""}
+                                onValueChange={(value) => handleChange("origin_id", value)}
+                                disabled={loading}
+                                required
+                            >
+                                <SelectTrigger id="origin_id">
+                                    <SelectValue placeholder="Selecionar origem..." />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {originOptions.length > 0 ? (
+                                        originOptions.map((option) => (
+                                            <SelectItem key={option.value} value={option.value.toString()}>
+                                                {option.label}
+                                            </SelectItem>
+                                        ))
+                                    ) : (
+                                        <>
+                                            <SelectItem value="36">Nacional</SelectItem>
+                                            <SelectItem value="37">Importado</SelectItem>
+                                        </>
+                                    )}
+                                </SelectContent>
+                            </Select>
+                        </div>
 
-                    <div className="space-y-2">
-                        <Label htmlFor="ncm">
-                            NCM <span className="text-destructive">*</span>
-                        </Label>
-                        <Input
-                            id="ncm"
-                            placeholder="Digite o NCM..."
-                            className="w-full"
-                            value={formData.ncm || ""}
-                            onChange={(e) => setFormData({ ...formData, ncm: e.target.value })}
-                        />
-                    </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="ncm">
+                                NCM <span className="text-destructive">*</span>
+                            </Label>
+                            <Input
+                                id="ncm"
+                                placeholder="Digite o NCM..."
+                                value={formData.ncm || ""}
+                                onChange={(e) => handleChange("ncm", e.target.value)}
+                                disabled={loading}
+                                required
+                            />
+                        </div>
 
-                    <div className="space-y-2">
-                        <Label htmlFor="cest">
-                            CEST <span className="text-destructive">*</span>
-                        </Label>
-                        <Input
-                            id="cest"
-                            placeholder="Digite o CEST..."
-                            className="w-full"
-                            value={formData.cest || ""}
-                            onChange={(e) => setFormData({ ...formData, cest: e.target.value })}
-                        />
-                    </div>
-                </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="cest">
+                                CEST <span className="text-destructive">*</span>
+                            </Label>
+                            <Input
+                                id="cest"
+                                placeholder="Digite o CEST..."
+                                value={formData.cest || ""}
+                                onChange={(e) => handleChange("cest", e.target.value)}
+                                disabled={loading}
+                                required
+                            />
+                        </div>
+                    </FieldGroup>
 
-                <div className="flex gap-2">
-                    <Button onClick={onSubmit} className="cursor-pointer">
-                        Criar
-                    </Button>
-                    <Button variant="outline" onClick={onCancel} className="cursor-pointer">
-                        Cancelar
-                    </Button>
-                </div>
+                    <div className="flex gap-2">
+                        <Button type="submit" disabled={loading}>
+                            {loading ? "Criando..." : "Criar"}
+                        </Button>
+                        {onCancel && (
+                            <Button type="button" variant="outline" onClick={onCancel} disabled={loading}>
+                                Cancelar
+                            </Button>
+                        )}
+                    </div>
+                </form>
             </CardContent>
         </Card>
     );

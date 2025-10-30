@@ -15,7 +15,7 @@ export default function Suppliers() {
     });
 
     return (
-        <div className="gap-4 flex flex-col">
+        <div className="gap-4 flex flex-col animate-fadeSlideIn">
             <PageCard
                 title="Fornecedores"
                 redirect="/suppliers/create"

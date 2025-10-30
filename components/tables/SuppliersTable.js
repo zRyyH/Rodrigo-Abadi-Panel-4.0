@@ -12,8 +12,13 @@ import {
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card";
 import { EmptyTable } from "./Empty";
+import { TableLoading } from "@/components/common/TableLoading";
 
-export function SuppliersTable({ rows, onRemove }) {
+export function SuppliersTable({ rows, onRemove, loading }) {
+    if (loading) {
+        return <TableLoading columns={[]} message="Carregando..." />;
+    }
+
     if (rows.length < 1) return <EmptyTable />
 
     return (
@@ -29,7 +34,6 @@ export function SuppliersTable({ rows, onRemove }) {
                     {rows.map((supplier) => (
                         <TableRow
                             key={supplier.id}
-                            className="cursor-pointer"
                         >
                             <TableCell className="font-medium">{supplier.supplier_name}</TableCell>
                             <TableCell className="text-right">
@@ -41,6 +45,7 @@ export function SuppliersTable({ rows, onRemove }) {
                                         onRemove(supplier)
                                     }}
                                     aria-label="Remover fornecedor"
+                                    className="cursor-pointer"
                                 >
                                     <Trash2 className="size-4" />
                                 </Button>

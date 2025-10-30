@@ -15,7 +15,7 @@ export default function Packages() {
     });
 
     return (
-        <div className="gap-4 flex flex-col">
+        <div className="gap-4 flex flex-col animate-fadeSlideIn">
             <PageCard
                 title="Embalagens"
                 redirect="/packages/create"
