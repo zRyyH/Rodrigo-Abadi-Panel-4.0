@@ -1,6 +1,6 @@
 import { directusToAxiosParams } from "@/utils/serviceUtils";
 import { transformData } from '@/utils/serviceUtils';
-import { httpClient } from '@/lib/httpClient';
+import { directus } from '@/lib/directus';
 
 import { transformPackage } from "@/transforms/packages";
 
@@ -11,7 +11,20 @@ export const packagesService = {
             search,
         })
 
-        const { data } = await httpClient.get('/items/packages', { params });
+        const { data } = await directus.get('/items/packages', { params });
         return transformData(data?.data, transformPackage);
-    }
+    },
+    getById: async (id) => {
+        const { data } = await directus.get(`/items/packages/${id}`);
+        return data?.data
+    },
+    create: async (data) => {
+        return await directus.post('/items/packages', data);
+    },
+    update: async (id) => {
+        return await directus.patch(`/items/packages/${id}`, data);
+    },
+    delete: async (id) => {
+        return await directus.delete(`/items/packages/${id}`);
+    },
 };

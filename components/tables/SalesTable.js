@@ -9,8 +9,11 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Card } from "@/components/ui/card";
+import { EmptyTable } from "./Empty";
 
 export function SalesTable({ rows, onRowClick }) {
+    if (rows.length < 1) return <EmptyTable />
+
     return (
         <Card className="w-full p-3 animate-fadeSlideIn">
             <Table className="table-fixed">
@@ -39,13 +42,13 @@ export function SalesTable({ rows, onRowClick }) {
                                 onClick={() => onRowClick?.(sale)}
                                 className="cursor-pointer"
                             >
-                                <TableCell className="truncate">{sale.saleNumber}</TableCell>
+                                <TableCell className="truncate">{sale.sale_id}</TableCell>
                                 <TableCell className="truncate">{sale.sku}</TableCell>
-                                <TableCell className="truncate">{sale.title}</TableCell>
-                                <TableCell className="truncate">{sale.buyerName}</TableCell>
-                                <TableCell className="truncate">{sale.listingId}</TableCell>
-                                <TableCell className="truncate">{sale.formattedDate}</TableCell>
-                                <TableCell className="truncate">{sale.deliveryMethod}</TableCell>
+                                <TableCell className="truncate">{sale.listing_title}</TableCell>
+                                <TableCell className="truncate">{sale.buyer_name}</TableCell>
+                                <TableCell className="truncate">{sale.listing_id}</TableCell>
+                                <TableCell className="truncate">{sale.formatted_date}</TableCell>
+                                <TableCell className="truncate">{sale.delivery_method}</TableCell>
                             </TableRow>
                         ))
                     )}

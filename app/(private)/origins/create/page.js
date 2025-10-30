@@ -1,30 +1,20 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from 'next/navigation';
+import FormManager from "@/components/forms/FormManager";
 import OriginForm from "@/components/forms/OriginForm";
+import { originsService } from "@/services/origins";
 
-export default function CreateOrigin() {
-    const router = useRouter()
-    const [origin, setOrigin] = useState("");
-
-    function onSubmit() {
-        console.log("Criar:", origin)
-    }
-
-    function onCancel() {
-        setOrigin("")
-        router.push("/origins")
-        console.log("Cancelar origem")
-    }
-
+export default function OriginPage() {
     return (
-        <OriginForm
-            mode="create"
-            value={origin}
-            onChange={setOrigin}
-            onSubmit={onSubmit}
-            onCancel={onCancel}
-        />
+        <FormManager
+            queryKey="origins"
+            queryFn={originsService.getById}
+            createFn={originsService.create}
+            updateFn={originsService.update}
+            redirectTo="/origins"
+            initialData={{ origin: "" }}
+        >
+            <OriginForm />
+        </FormManager>
     );
 }

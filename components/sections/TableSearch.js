@@ -4,6 +4,7 @@ import React from "react";
 import SearchbarWithFilters from "@/components/sections/SearchBar";
 import useSearchWithFilters from "@/hooks/useSearchWithFilters";
 import { Pagination } from "@/components/common/Pagination";
+import { PageCard } from "@/components/common/PageCard";
 import { usePagination } from "@/hooks/usePagination";
 import { useQuery } from "@tanstack/react-query";
 

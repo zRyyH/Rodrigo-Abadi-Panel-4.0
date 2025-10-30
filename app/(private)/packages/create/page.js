@@ -1,30 +1,20 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from 'next/navigation';
+import FormManager from "@/components/forms/FormManager";
 import PackageForm from "@/components/forms/PackageForm";
+import { packagesService } from "@/services/packages";
 
-export default function CreatePackage() {
-    const router = useRouter()
-    const [pack, setPackage] = useState("");
-
-    function onSubmit() {
-        console.log("Criar embalagem:", pack)
-    }
-
-    function onCancel() {
-        setPackage("")
-        router.push("/packages")
-        console.log("Cancelar embalagem")
-    }
-
+export default function PackagesPage() {
     return (
-        <PackageForm
-            mode="create"
-            value={pack}
-            onChange={setPackage}
-            onSubmit={onSubmit}
-            onCancel={onCancel}
-        />
+        <FormManager
+            queryKey="packages"
+            queryFn={packagesService.getById}
+            createFn={packagesService.create}
+            updateFn={packagesService.update}
+            redirectTo="/packages"
+            initialData={{ type_of_packaging: "" }}
+        >
+            <PackageForm />
+        </FormManager>
     );
 }

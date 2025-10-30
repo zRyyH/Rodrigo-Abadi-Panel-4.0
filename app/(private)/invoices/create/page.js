@@ -1,43 +1,20 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from 'next/navigation';
+import { invoicesService } from "@/services/invoices";
+import FormManager from "@/components/forms/FormManager";
 import InvoicesForm from "@/components/forms/InvoicesForm";
 
-export default function CreateInvoices() {
-    const router = useRouter()
-
-    const [formData, setFormData] = useState({
-        productName: "",
-        quantity: "",
-        origin: "",
-        ncm: "",
-        cest: ""
-    });
-
-    const onSubmit = () => {
-        console.log("Criar invoice:", formData);
-    };
-
-    const onCancel = () => {
-        setFormData({
-            productName: "",
-            quantity: "",
-            origin: "",
-            ncm: "",
-            cest: ""
-        });
-        router.push("/invoices")
-
-        console.log("Cancelar invoice");
-    };
-
+export default function OriginPage() {
     return (
-        <InvoicesForm
-            formData={formData}
-            setFormData={setFormData}
-            onSubmit={onSubmit}
-            onCancel={onCancel}
-        />
+        <FormManager
+            queryKey="invoices"
+            queryFn={invoicesService.getById}
+            createFn={invoicesService.create}
+            updateFn={invoicesService.update}
+            redirectTo="/invoices"
+            initialData={{ product_name: "", quantity: "", ncm: "", cest: "", origin_id: "" }}
+        >
+            <InvoicesForm />
+        </FormManager>
     );
 }

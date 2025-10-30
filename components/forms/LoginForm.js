@@ -99,7 +99,7 @@ export default function LoginForm({
                 </div>
                 <Button
                     variant="outline"
-                    className="w-full"
+                    className="w-full cursor-pointer"
                     onClick={onGoogleSignIn}
                     disabled={true}
                 >
@@ -111,7 +111,7 @@ export default function LoginForm({
                     Não tem uma conta?{" "}
                     <Button
                         variant="link"
-                        className="h-auto p-0 text-sm font-medium"
+                        className="h-auto p-0 text-sm font-medium cursor-pointer"
                         onClick={onSignUp}
                         disabled={true}
                     >

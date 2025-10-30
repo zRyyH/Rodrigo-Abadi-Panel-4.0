@@ -12,14 +12,15 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { PencilIcon, Trash2Icon } from "lucide-react";
 import { Card } from "@/components/ui/card";
-
+import { EmptyTable } from "./Empty";
 
 export function ProductsTable({
     rows,
     onEdit,
     onDelete
 }) {
-    console.log(rows)
+    if (rows.length < 1) return <EmptyTable />
+
     return (
         <Card className="w-full p-3 animate-fadeSlideIn" >
             <Table>
@@ -40,8 +41,7 @@ export function ProductsTable({
                 <TableBody>
                     {rows.map((item) => (
                         <TableRow
-                            key={item.id}
-                            className="cursor-pointer" >
+                            key={item.id} >
                             <TableCell>
                                 <Avatar className="size-10">
                                     <AvatarImage src={item.image} alt={item.name} />
@@ -51,9 +51,9 @@ export function ProductsTable({
                             <TableCell className="font-mono text-sm">{item.sku}</TableCell>
                             <TableCell className="font-medium">{item.name}</TableCell>
                             <TableCell className="text-center font-medium">{item.quantity}</TableCell>
-                            <TableCell className="text-muted-foreground">{item.package}</TableCell>
-                            <TableCell className="text-muted-foreground">{item.supplier}</TableCell>
-                            <TableCell className="font-medium">{item.cost}</TableCell>
+                            <TableCell className="text-muted-foreground">{item.type_of_packaging}</TableCell>
+                            <TableCell className="text-muted-foreground">{item.supplier_name}</TableCell>
+                            <TableCell className="font-medium">{item.purchase_cost}</TableCell>
                             <TableCell className="font-mono text-sm text-muted-foreground">{item.ncm}</TableCell>
                             <TableCell className="font-mono text-sm text-muted-foreground">{item.cest}</TableCell>
                             <TableCell className="text-right">
@@ -61,7 +61,7 @@ export function ProductsTable({
                                     <Button
                                         variant="ghost"
                                         size="icon-sm"
-                                        className="size-8"
+                                        className="size-8 cursor-pointer"
                                         onClick={(e) => {
                                             e.stopPropagation()
                                             onEdit?.(item)
@@ -72,7 +72,7 @@ export function ProductsTable({
                                     <Button
                                         variant="ghost"
                                         size="icon-sm"
-                                        className="size-8 text-destructive hover:text-destructive"
+                                        className="size-8 text-destructive hover:text-destructive cursor-pointer"
                                         onClick={(e) => {
                                             e.stopPropagation()
                                             onDelete?.(item)

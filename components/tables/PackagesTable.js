@@ -11,8 +11,11 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card";
+import { EmptyTable } from "./Empty";
 
 export function PackagesTable({ rows, onRemove }) {
+    if (rows.length < 1) return <EmptyTable />
+
     return (
         <Card className="w-full p-3 animate-fadeSlideIn" >
             <Table>

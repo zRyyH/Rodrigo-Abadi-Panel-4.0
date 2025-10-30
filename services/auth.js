@@ -2,18 +2,18 @@
 import { tokenStorage } from '@/utils/tokenStorage';
 
 // Importa a instância configurada do axios para fazer requisições HTTP à API
-import { api } from '@/config/axios';
+import { directus } from '@/config/directus';
 
 // Exporta o objeto authService que contém todos os métodos relacionados à autenticação
 export const authService = {
     // Método assíncrono para realizar login do usuário
     login: async (credentials) => {
         // Faz uma requisição POST para o endpoint de login enviando as credenciais (email/senha)
-        const response = await api.post('/auth/login', credentials);
+        const response = await directus.post('/auth/login', credentials);
 
         // Desestrutura a resposta para extrair os tokens de acesso e atualização
         const { access_token, refresh_token } = response.data.data;
-        
+
         // Armazena os tokens (geralmente no localStorage ou sessionStorage) usando o tokenStorage
         tokenStorage.setTokens(access_token, refresh_token);
 

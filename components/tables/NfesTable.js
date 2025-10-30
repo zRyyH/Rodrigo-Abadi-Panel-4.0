@@ -11,8 +11,11 @@ import {
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FileTextIcon, FileCodeIcon } from "lucide-react";
+import { EmptyTable } from "./Empty";
 
 export function NfesTable({ rows = [], onRowClick, onDownloadPdf, onDownloadXml }) {
+    if (rows.length < 1) return <EmptyTable />
+
     const isValidFile = (file) => {
         return file !== null && file !== undefined && file !== "";
     };
@@ -42,12 +45,11 @@ export function NfesTable({ rows = [], onRowClick, onDownloadPdf, onDownloadXml 
                             <TableRow
                                 key={nfe.id}
                                 onClick={() => onRowClick?.(nfe)}
-                                className="cursor-pointer"
                             >
-                                <TableCell className="w-[16.66%] font-medium">{nfe.saleNumber}</TableCell>
-                                <TableCell className="w-[16.66%]">{nfe.invoiceNumber}</TableCell>
-                                <TableCell className="w-[16.66%]">{nfe.totalValue}</TableCell>
-                                <TableCell className="w-[16.66%]">{nfe.date}</TableCell>
+                                <TableCell className="w-[16.66%] font-medium">{nfe.sale_or_dispatch}</TableCell>
+                                <TableCell className="w-[16.66%]">{nfe.invoice_number}</TableCell>
+                                <TableCell className="w-[16.66%]">{nfe.total_amount}</TableCell>
+                                <TableCell className="w-[16.66%]">{nfe.issue_date}</TableCell>
                                 <TableCell className="w-[16.66%]">{nfe.status}</TableCell>
                                 <TableCell className="w-[16.66%] text-right" onClick={(e) => e.stopPropagation()}>
                                     <div className="flex gap-2 justify-end">
@@ -56,6 +58,7 @@ export function NfesTable({ rows = [], onRowClick, onDownloadPdf, onDownloadXml 
                                             size="sm"
                                             disabled={!isValidFile(nfe.pdf_url)}
                                             onClick={() => onDownloadPdf?.(nfe.pdf_url)}
+                                            className="cursor-pointer"
                                         >
                                             <FileTextIcon />
                                             PDF
@@ -65,6 +68,7 @@ export function NfesTable({ rows = [], onRowClick, onDownloadPdf, onDownloadXml 
                                             size="sm"
                                             disabled={!isValidFile(nfe.xml_url)}
                                             onClick={() => onDownloadXml?.(nfe.xml_url)}
+                                            className="cursor-pointer"
                                         >
                                             <FileCodeIcon />
                                             XML

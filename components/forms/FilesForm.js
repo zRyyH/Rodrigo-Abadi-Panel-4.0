@@ -1,110 +1,135 @@
 "use client";
 
-import { UploadIcon, CheckCircle2Icon } from "lucide-react";
+import { UploadIcon, CheckCircle2Icon, FileIcon, FileSpreadsheetIcon, FileArchiveIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Spinner } from "@/components/ui/spinner";
+import { cn } from "@/lib/utils";
 
-export function FileUploadForm({ files, onFileChange, onSubmit }) {
+const fileInputs = [
+    {
+        id: "sales",
+        label: "Vendas XLSX",
+        description: "Arquivo de vendas em formato Excel",
+        accept: ".xlsx",
+        icon: FileSpreadsheetIcon,
+    },
+    {
+        id: "nfes",
+        label: "NFEs XLSX",
+        description: "Notas fiscais eletrônicas em Excel",
+        accept: ".xlsx",
+        icon: FileSpreadsheetIcon,
+    },
+    {
+        id: "xml",
+        label: "XML ZIP",
+        description: "Arquivos XML compactados",
+        accept: ".zip",
+        icon: FileArchiveIcon,
+    },
+    {
+        id: "pdf",
+        label: "PDF ZIP",
+        description: "Arquivos PDF compactados",
+        accept: ".zip",
+        icon: FileArchiveIcon,
+    },
+];
+
+export function FileUploadForm({ files, onFileChange, onSubmit, loading }) {
     return (
-        <Card className="p-6 animate-fadeSlideIn">
-            <form onSubmit={onSubmit} className="space-y-4">
-                <h2 className="text-lg font-semibold">Upload Files</h2>
+        <Card className="shadow-lg">
+            <CardHeader className="space-y-1">
+                <CardTitle className="text-2xl">Upload de Arquivos</CardTitle>
+                <CardDescription>
+                    Selecione os arquivos necessários para processamento
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                <form onSubmit={onSubmit} className="space-y-6">
+                    <div className="grid gap-4">
+                        {fileInputs.map((input) => {
+                            const Icon = input.icon;
+                            const hasFile = files[input.id];
 
-                <div className="space-y-2">
-                    <div className="flex items-center gap-3">
-                        <label className="flex flex-1 items-center justify-between rounded-md border p-3 cursor-pointer hover:bg-muted/50 transition-colors">
-                            <span className="text-sm font-medium">Vendas XLSX</span>
+                            return (
+                                <div key={input.id} className="space-y-2">
+                                    <Label htmlFor={input.id} className="text-sm font-medium">
+                                        {input.label}
+                                    </Label>
+                                    <label
+                                        htmlFor={input.id}
+                                        className={cn(
+                                            "group relative flex items-center gap-4 rounded-lg border-2 border-dashed px-4 py-4 cursor-pointer transition-all",
+                                            hasFile
+                                                ? "border-green-500 bg-green-50 dark:bg-green-950/20"
+                                                : "border-muted-foreground/25 hover:border-primary hover:bg-muted/50",
+                                            loading && "pointer-events-none opacity-60"
+                                        )}
+                                    >
+                                        <div
+                                            className={cn(
+                                                "flex size-10 shrink-0 items-center justify-center rounded-lg transition-colors",
+                                                hasFile
+                                                    ? "bg-green-500 text-white"
+                                                    : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"
+                                            )}
+                                        >
+                                            {hasFile ? (
+                                                <CheckCircle2Icon className="size-5" />
+                                            ) : (
+                                                <Icon className="size-5" />
+                                            )}
+                                        </div>
 
-                            {files.sales ? (
-                                <div className="flex items-center gap-2 text-green-600">
-                                    <span className="text-xs truncate max-w-[120px]">{files.sales.name}</span>
-                                    <CheckCircle2Icon className="size-4 shrink-0" />
+                                        <div className="flex-1 min-w-0">
+                                            <div className="flex items-center gap-2">
+                                                <p className="text-sm font-medium">
+                                                    {hasFile ? files[input.id].name : "Selecionar arquivo"}
+                                                </p>
+                                            </div>
+                                            <p className="text-xs text-muted-foreground mt-0.5">
+                                                {hasFile ? `${(files[input.id].size / 1024).toFixed(1)} KB` : input.description}
+                                            </p>
+                                        </div>
+
+                                        {hasFile && (
+                                            <div className="flex size-6 shrink-0 items-center justify-center rounded-full bg-green-500">
+                                                <CheckCircle2Icon className="size-4 text-white" />
+                                            </div>
+                                        )}
+
+                                        <input
+                                            id={input.id}
+                                            type="file"
+                                            accept={input.accept}
+                                            className="hidden"
+                                            onChange={(e) => onFileChange(input.id, e.target.files[0])}
+                                            disabled={loading}
+                                        />
+                                    </label>
                                 </div>
-                            ) : (
-                                <span className="text-xs text-muted-foreground">Choose file</span>
-                            )}
-
-                            <input
-                                type="file"
-                                accept=".xlsx"
-                                className="hidden"
-                                onChange={(e) => onFileChange("sales", e.target.files[0])}
-                            />
-                        </label>
+                            );
+                        })}
                     </div>
 
-                    <div className="flex items-center gap-3">
-                        <label className="flex flex-1 items-center justify-between rounded-md border p-3 cursor-pointer hover:bg-muted/50 transition-colors">
-                            <span className="text-sm font-medium">NFEs XLSX</span>
-
-                            {files.nfes ? (
-                                <div className="flex items-center gap-2 text-green-600">
-                                    <span className="text-xs truncate max-w-[120px]">{files.nfes.name}</span>
-                                    <CheckCircle2Icon className="size-4 shrink-0" />
-                                </div>
-                            ) : (
-                                <span className="text-xs text-muted-foreground">Choose file</span>
-                            )}
-
-                            <input
-                                type="file"
-                                accept=".xlsx"
-                                className="hidden"
-                                onChange={(e) => onFileChange("nfes", e.target.files[0])}
-                            />
-                        </label>
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                        <label className="flex flex-1 items-center justify-between rounded-md border p-3 cursor-pointer hover:bg-muted/50 transition-colors">
-                            <span className="text-sm font-medium">XML ZIP</span>
-
-                            {files.xml ? (
-                                <div className="flex items-center gap-2 text-green-600">
-                                    <span className="text-xs truncate max-w-[120px]">{files.xml.name}</span>
-                                    <CheckCircle2Icon className="size-4 shrink-0" />
-                                </div>
-                            ) : (
-                                <span className="text-xs text-muted-foreground">Choose file</span>
-                            )}
-
-                            <input
-                                type="file"
-                                accept=".zip"
-                                className="hidden"
-                                onChange={(e) => onFileChange("xml", e.target.files[0])}
-                            />
-                        </label>
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                        <label className="flex flex-1 items-center justify-between rounded-md border p-3 cursor-pointer hover:bg-muted/50 transition-colors">
-                            <span className="text-sm font-medium">PDF ZIP</span>
-
-                            {files.pdf ? (
-                                <div className="flex items-center gap-2 text-green-600">
-                                    <span className="text-xs truncate max-w-[120px]">{files.pdf.name}</span>
-                                    <CheckCircle2Icon className="size-4 shrink-0" />
-                                </div>
-                            ) : (
-                                <span className="text-xs text-muted-foreground">Choose file</span>
-                            )}
-
-                            <input
-                                type="file"
-                                accept=".zip"
-                                className="hidden"
-                                onChange={(e) => onFileChange("pdf", e.target.files[0])}
-                            />
-                        </label>
-                    </div>
-                </div>
-
-                <Button type="submit" className="w-full">
-                    <UploadIcon />
-                    Upload Files
-                </Button>
-            </form>
+                    <Button type="submit" className="w-full h-11 text-base font-medium" disabled={loading} size="lg">
+                        {loading ? (
+                            <>
+                                <Spinner className="size-5" />
+                                Processando...
+                            </>
+                        ) : (
+                            <>
+                                <UploadIcon className="size-5" />
+                                Fazer Upload
+                            </>
+                        )}
+                    </Button>
+                </form>
+            </CardContent>
         </Card>
     );
 }

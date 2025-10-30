@@ -11,8 +11,11 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card";
+import { EmptyTable } from "./Empty";
 
 export function OriginsTable({ rows, onRemove }) {
+    if (rows.length < 1) return <EmptyTable />
+
     return (
         <Card className="w-full p-3 animate-fadeSlideIn" >
             <Table>
@@ -26,7 +29,6 @@ export function OriginsTable({ rows, onRemove }) {
                     {rows.map((origin) => (
                         <TableRow
                             key={origin.id}
-                            className="cursor-pointer"
                         >
                             <TableCell className="font-medium">{origin.origin}</TableCell>
                             <TableCell className="text-right">
@@ -38,6 +40,7 @@ export function OriginsTable({ rows, onRemove }) {
                                         onRemove(origin)
                                     }}
                                     aria-label="Remover origem"
+                                    className="cursor-pointer"
                                 >
                                     <Trash2 className="size-4" />
                                 </Button>

@@ -22,7 +22,7 @@ export default function InvoicesForm({
     setFormData,
     onSubmit,
     onCancel,
-    origins = []
+    origin_ids = []
 }) {
     return (
         <Card className="animate-fadeSlideIn">
@@ -32,15 +32,15 @@ export default function InvoicesForm({
             <CardContent className="space-y-6">
                 <div className="space-y-4">
                     <div className="space-y-2">
-                        <Label htmlFor="productName">
+                        <Label htmlFor="product_name">
                             Nome do produto <span className="text-destructive">*</span>
                         </Label>
                         <Input
-                            id="productName"
+                            id="product_name"
                             placeholder="Digite o nome do produto..."
                             className="w-full"
-                            value={formData.productName || ""}
-                            onChange={(e) => setFormData({ ...formData, productName: e.target.value })}
+                            value={formData.product_name || ""}
+                            onChange={(e) => setFormData({ ...formData, product_name: e.target.value })}
                         />
                     </div>
 
@@ -58,29 +58,19 @@ export default function InvoicesForm({
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="origin">
+                        <Label htmlFor="origin_id">
                             Origem <span className="text-destructive">*</span>
                         </Label>
                         <Select
-                            value={formData.origin || ""}
-                            onValueChange={(value) => setFormData({ ...formData, origin: value })}
+                            value={formData.origin_id || ""}
+                            onValueChange={(value) => setFormData({ ...formData, origin_id: value })}
                         >
-                            <SelectTrigger id="origin" className="w-[180px]">
+                            <SelectTrigger id="origin_id" className="w-[180px]">
                                 <SelectValue placeholder="Selecionar item..." />
                             </SelectTrigger>
                             <SelectContent>
-                                {origins.length > 0 ? (
-                                    origins.map((origin) => (
-                                        <SelectItem key={origin.value} value={origin.value}>
-                                            {origin.label}
-                                        </SelectItem>
-                                    ))
-                                ) : (
-                                    <>
-                                        <SelectItem value="nacional">Nacional</SelectItem>
-                                        <SelectItem value="importado">Importado</SelectItem>
-                                    </>
-                                )}
+                                <SelectItem value={36}>Nacional</SelectItem>
+                                <SelectItem value={37}>Importado</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
@@ -113,10 +103,10 @@ export default function InvoicesForm({
                 </div>
 
                 <div className="flex gap-2">
-                    <Button onClick={onSubmit}>
+                    <Button onClick={onSubmit} className="cursor-pointer">
                         Criar
                     </Button>
-                    <Button variant="outline" onClick={onCancel}>
+                    <Button variant="outline" onClick={onCancel} className="cursor-pointer">
                         Cancelar
                     </Button>
                 </div>

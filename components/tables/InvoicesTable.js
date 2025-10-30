@@ -10,9 +10,15 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useRouter } from 'next/navigation';
 import { Trash2 } from "lucide-react";
+import { EmptyTable } from "./Empty";
 
-export function InvoicesTable({ rows, onEdit, onDelete }) {
+export function InvoicesTable({ rows, onDelete }) {
+    const router = useRouter();
+
+    if (rows.length < 1) return <EmptyTable />
+
     return (
         <Card className="w-full p-3 animate-fadeSlideIn" >
             <Table>
@@ -27,23 +33,23 @@ export function InvoicesTable({ rows, onEdit, onDelete }) {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {rows.map((product) => (
+                    {rows.map((invoice) => (
                         <TableRow
-                            key={product.id}
-                            onClick={() => onEdit(product)}
+                            key={invoice.id}
+                            onClick={() => router.push(`/invoices/edit/${invoice.id}`)}
                             className="cursor-pointer"
                         >
-                            <TableCell className="font-medium">{product.productName}</TableCell>
-                            <TableCell>{product.quantity}</TableCell>
-                            <TableCell>{product.ncm}</TableCell>
-                            <TableCell>{product.cest}</TableCell>
-                            <TableCell>{product.origin}</TableCell>
+                            <TableCell className="font-medium">{invoice.product_name}</TableCell>
+                            <TableCell>{invoice.quantity}</TableCell>
+                            <TableCell>{invoice.ncm}</TableCell>
+                            <TableCell>{invoice.cest}</TableCell>
+                            <TableCell>{invoice.origin_id}</TableCell>
                             <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
                                 <div className="flex justify-end gap-2">
                                     <Button
                                         variant="ghost"
                                         size="icon-sm"
-                                        onClick={() => onDelete(product)}
+                                        onClick={() => onDelete(invoice)}
                                     >
                                         <Trash2 />
                                     </Button>

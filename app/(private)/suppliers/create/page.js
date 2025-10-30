@@ -1,32 +1,20 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from 'next/navigation';
 import SupplierForm from "@/components/forms/SupplierForm";
+import FormManager from "@/components/forms/FormManager";
+import { suppliersService } from "@/services/suppliers";
 
-export default function CreateSupplier() {
-    const router = useRouter()
-    const [supplier, setSupplier] = useState("");
-
-    function onSubmit() {
-        console.log("Criar:", supplier)
-    }
-
-    function onCancel() {
-        console.log("Cancelar:", supplier)
-        setSupplier("")
-        router.push("/suppliers")
-    }
-
+export default function PackagesPage() {
     return (
-        <div className="p-8">
-            <SupplierForm
-                mode="create"
-                value={supplier}
-                onChange={setSupplier}
-                onSubmit={onSubmit}
-                onCancel={onCancel}
-            />
-        </div>
+        <FormManager
+            queryKey="suppliers"
+            queryFn={suppliersService.getById}
+            createFn={suppliersService.create}
+            updateFn={suppliersService.update}
+            redirectTo="/suppliers"
+            initialData={{ supplier_name: "" }}
+        >
+            <SupplierForm />
+        </FormManager>
     );
 }

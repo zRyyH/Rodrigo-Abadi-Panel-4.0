@@ -1,8 +1,8 @@
 import { directusToAxiosParams } from "@/utils/serviceUtils";
 import { transformData } from '@/utils/serviceUtils';
-import { httpClient } from '@/lib/httpClient';
+import { directus } from '@/lib/directus';
 
-import { transformSale } from "@/transforms/sales";
+import { transformSale, transformSaleView } from "@/transforms/sales";
 
 export const salesService = {
     getAll: async (search = '') => {
@@ -11,7 +11,20 @@ export const salesService = {
             search,
         })
 
-        const { data } = await httpClient.get('/items/sales', { params });
+        const { data } = await directus.get('/items/sales', { params });
         return transformData(data?.data, transformSale);
-    }
+    },
+    getById: async (id) => {
+        const { data } = await directus.get(`/items/sales/${id}`);
+        return data?.data
+    },
+    create: async (data) => {
+        return await directus.post('/items/sales', data);
+    },
+    update: async (id) => {
+        return await directus.patch(`/items/sales/${id}`, data);
+    },
+    delete: async (id) => {
+        return await directus.delete(`/items/sales/${id}`);
+    },
 };

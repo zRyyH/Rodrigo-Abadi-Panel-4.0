@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export default function SupplierForm({ mode = "create", value, onChange, onSubmit, onCancel }) {
+export default function SupplierForm({ mode = "create", value, formData, setFormData, onSubmit, onCancel }) {
     const isEditMode = mode === "edit";
 
     return (
@@ -23,15 +23,15 @@ export default function SupplierForm({ mode = "create", value, onChange, onSubmi
                         placeholder="Digite a Fornecedor..."
                         className="w-full"
                         value={value}
-                        onChange={(e) => onChange(e.target.value)}
+                        onChange={(e) => setFormData({ ...formData, supplier_name: e.target.value })}
                     />
                 </div>
 
                 <div className="flex gap-3">
-                    <Button onClick={onSubmit}>
+                    <Button onClick={onSubmit} className="cursor-pointer">
                         {isEditMode ? "Salvar" : "Criar"}
                     </Button>
-                    <Button variant="outline" onClick={onCancel}>
+                    <Button variant="outline" onClick={onCancel} className="cursor-pointer">
                         Cancelar
                     </Button>
                 </div>

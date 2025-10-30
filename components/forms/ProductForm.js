@@ -202,8 +202,8 @@ export default function ProductForm({
 
                 {/* Botões de Ação */}
                 <div className="mt-6 flex gap-4">
-                    <Button onClick={onSubmit}>Criar</Button>
-                    <Button variant="outline" onClick={onCancel}>
+                    <Button onClick={onSubmit} className="cursor-pointer">Criar</Button >
+                    <Button variant="outline" onClick={onCancel} className="cursor-pointer">
                         Cancelar
                     </Button>
                 </div>

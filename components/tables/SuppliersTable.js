@@ -11,8 +11,11 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card";
+import { EmptyTable } from "./Empty";
 
 export function SuppliersTable({ rows, onRemove }) {
+    if (rows.length < 1) return <EmptyTable />
+
     return (
         <Card className="w-full p-3 animate-fadeSlideIn" >
             <Table>
@@ -28,7 +31,7 @@ export function SuppliersTable({ rows, onRemove }) {
                             key={supplier.id}
                             className="cursor-pointer"
                         >
-                            <TableCell className="font-medium">{supplier.supplierName}</TableCell>
+                            <TableCell className="font-medium">{supplier.supplier_name}</TableCell>
                             <TableCell className="text-right">
                                 <Button
                                     variant="ghost"

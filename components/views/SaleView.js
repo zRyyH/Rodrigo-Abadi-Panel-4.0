@@ -1,181 +1,130 @@
 "use client";
 
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { FileText, FileCode, Package } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 
-export default function SaleView({ saleData }) {
-    const {
-        products = [],
-        saleNumber = "",
-        date = "",
-        buyerName = "",
-        shippingData = "",
-        shippingData2 = "",
-        fiscalNoteNumber = "",
-        totalPrice = "",
-        salesTariffs = "",
-        shippingCost = "",
-        taxes = "",
-        total = "",
-        profit = "",
-        pdfUrl = "",
-        xmlUrl = "",
-    } = saleData || {};
-
-    const isPdfValid = pdfUrl && pdfUrl.trim() !== "";
-    const isXmlValid = xmlUrl && xmlUrl.trim() !== "";
-
-    const handlePdfDownload = () => {
-        if (isPdfValid) {
-            window.open(pdfUrl, "_blank");
-        }
-    };
-
-    const handleXmlDownload = () => {
-        if (isXmlValid) {
-            window.open(xmlUrl, "_blank");
-        }
-    };
+export default function SaleView({
+    product = {},
+    saleNumber = "",
+    date = "",
+    buyerName = "",
+    shippingData = "",
+    shippingData2 = "",
+    fiscalNoteNumber = "",
+    totalPrice = "",
+    shippingRevenue = "",
+    shippingCost = "",
+    taxes = "",
+    total = "",
+    profit = "",
+    pdfUrl = "",
+    xmlUrl = ""
+}) {
+    const isPdfValid = pdfUrl?.trim();
+    const isXmlValid = xmlUrl?.trim();
 
     return (
-        <div className="w-full p-6 space-y-6 animate-fadeSlideIn">
+        <div className="w-full p-6 space-y-6">
             {/* Header */}
             <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-semibold text-foreground">Produtos</h1>
+                <h1 className="text-2xl font-semibold">Produto</h1>
                 <div className="flex gap-2">
                     <Button
                         variant="outline"
-                        size="default"
-                        onClick={handlePdfDownload}
+                        onClick={() => window.location.href = pdfUrl}
                         disabled={!isPdfValid}
-                        className="gap-2"
                     >
-                        <FileText className="size-4" />
+                        <FileText />
                         PDF
                     </Button>
                     <Button
                         variant="outline"
-                        size="default"
-                        onClick={handleXmlDownload}
+                        onClick={() => window.location.href = xmlUrl}
                         disabled={!isXmlValid}
-                        className="gap-2"
                     >
-                        <FileCode className="size-4" />
+                        <FileCode />
                         XML
                     </Button>
                 </div>
             </div>
 
-            {/* Products Table */}
+            {/* Product Card */}
             <Card>
-                <CardContent className="p-0">
-                    <div className="bg-muted/30 border-b">
-                        <div className="grid grid-cols-[80px_2fr_1fr_1fr] gap-6 px-6 py-3">
-                            <div className="text-sm font-medium text-muted-foreground">
-                                Foto
-                            </div>
-                            <div className="text-sm font-medium text-muted-foreground">
-                                Nome do produto
-                            </div>
-                            <div className="text-sm font-medium text-muted-foreground">
-                                Valor
-                            </div>
-                            <div className="text-sm font-medium text-muted-foreground">
-                                Quantidade
-                            </div>
+                <CardHeader>
+                    <CardTitle>Produto</CardTitle>
+                </CardHeader>
+                <CardContent className="flex items-center gap-4">
+                    <Avatar className="size-16">
+                        <AvatarImage src={product.imageUrl} alt={product.name} />
+                        <AvatarFallback>
+                            <Package />
+                        </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1 grid grid-cols-3 gap-4">
+                        <div>
+                            <p className="text-sm text-muted-foreground">Nome</p>
+                            <p className="text-sm font-medium">{product.name}</p>
+                        </div>
+                        <div>
+                            <p className="text-sm text-muted-foreground">Valor</p>
+                            <p className="text-sm font-medium">{product.value}</p>
+                        </div>
+                        <div>
+                            <p className="text-sm text-muted-foreground">Quantidade</p>
+                            <p className="text-sm font-medium">{product.quantity}</p>
                         </div>
                     </div>
-                    {products.length > 0 ? (
-                        products.map((product, index) => (
-                            <div
-                                key={index}
-                                className="grid grid-cols-[80px_2fr_1fr_1fr] gap-6 px-6 py-3 border-b last:border-b-0 items-center hover:bg-muted/20 transition-colors"
-                            >
-                                <div className="bg-muted rounded-md h-16 w-16 overflow-hidden flex items-center justify-center flex-shrink-0">
-                                    {product.imageUrl ? (
-                                        <img
-                                            src={product.imageUrl}
-                                            alt={product.name}
-                                            className="w-full h-full object-cover"
-                                        />
-                                    ) : (
-                                        <Package className="size-6 text-muted-foreground" />
-                                    )}
-                                </div>
-                                <div className="text-sm text-foreground">{product.name}</div>
-                                <div className="text-sm text-foreground">{product.value}</div>
-                                <div className="text-sm text-foreground">{product.quantity}</div>
-                            </div>
-                        ))
-                    ) : (
-                        <div className="p-8 text-center text-sm text-muted-foreground">
-                            Nenhum produto cadastrado
-                        </div>
-                    )}
                 </CardContent>
             </Card>
 
             <Separator />
 
             {/* Sale Information */}
-            <div className="space-y-3">
-                <div className="flex items-center justify-between py-1.5">
-                    <span className="text-sm text-muted-foreground">Número da venda</span>
-                    <span className="text-sm text-foreground font-medium">{saleNumber}</span>
-                </div>
-                <div className="flex items-center justify-between py-1.5">
-                    <span className="text-sm text-muted-foreground">Data</span>
-                    <span className="text-sm text-foreground font-medium">{date}</span>
-                </div>
-                <div className="flex items-center justify-between py-1.5">
-                    <span className="text-sm text-muted-foreground">Apelido comprador</span>
-                    <span className="text-sm text-foreground font-medium">{buyerName}</span>
-                </div>
-                <div className="flex items-center justify-between py-1.5">
-                    <span className="text-sm text-muted-foreground">Dados de envio</span>
-                    <span className="text-sm text-foreground font-medium">{shippingData}</span>
-                </div>
-                <div className="flex items-center justify-between py-1.5">
-                    <span className="text-sm text-muted-foreground">Dados de envio</span>
-                    <span className="text-sm text-foreground font-medium">{shippingData2}</span>
-                </div>
-                <div className="flex items-center justify-between py-1.5">
-                    <span className="text-sm text-muted-foreground">Número da nota fiscal</span>
-                    <span className="text-sm text-foreground font-medium">{fiscalNoteNumber}</span>
-                </div>
-            </div>
-
-            <Separator />
+            <Card>
+                <CardHeader>
+                    <CardTitle>Informações da Venda</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                    <InfoRow label="Número da venda" value={saleNumber} />
+                    <InfoRow label="Data" value={date} />
+                    <InfoRow label="Apelido comprador" value={buyerName} />
+                    <InfoRow label="Dados de envio" value={shippingData} />
+                    <InfoRow label="Dados de envio" value={shippingData2} />
+                    <InfoRow label="Número da nota fiscal" value={fiscalNoteNumber} />
+                </CardContent>
+            </Card>
 
             {/* Financial Summary */}
-            <div className="space-y-3">
-                <div className="flex items-center justify-between py-1.5">
-                    <span className="text-sm text-muted-foreground">Preço total dos produtos</span>
-                    <span className="text-sm text-foreground font-medium">{totalPrice}</span>
-                </div>
-                <div className="flex items-center justify-between py-1.5">
-                    <span className="text-sm text-muted-foreground">Tarifas de venda</span>
-                    <span className="text-sm text-foreground font-medium">{salesTariffs}</span>
-                </div>
-                <div className="flex items-center justify-between py-1.5">
-                    <span className="text-sm text-muted-foreground">Custo envio</span>
-                    <span className="text-sm text-foreground font-medium">{shippingCost}</span>
-                </div>
-                <div className="flex items-center justify-between py-1.5">
-                    <span className="text-sm text-muted-foreground">Impostos</span>
-                    <span className="text-sm text-foreground font-medium">{taxes}</span>
-                </div>
-                <div className="flex items-center justify-between py-1.5 border-t pt-3">
-                    <span className="text-sm font-semibold text-foreground">Total</span>
-                    <span className="text-sm font-semibold text-foreground">{total}</span>
-                </div>
-                <div className="flex items-center justify-between py-1.5">
-                    <span className="text-sm font-semibold text-foreground">Lucro</span>
-                    <span className="text-sm font-semibold text-foreground">{profit}</span>
-                </div>
-            </div>
+            <Card>
+                <CardHeader>
+                    <CardTitle>Resumo Financeiro</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                    <InfoRow label="Preço total dos produtos" value={totalPrice} />
+                    <InfoRow label="Receita por envio" value={shippingRevenue} />
+                    <InfoRow label="Custo envio" value={shippingCost} />
+                    <InfoRow label="Impostos e tarifas" value={taxes} />
+                    <Separator />
+                    <InfoRow label="Total" value={total} bold />
+                    <InfoRow label="Lucro" value={profit} bold />
+                </CardContent>
+            </Card>
+        </div>
+    );
+}
+
+function InfoRow({ label, value, bold = false }) {
+    return (
+        <div className="flex items-center justify-between py-1">
+            <span className={`text-sm ${bold ? "font-semibold" : "text-muted-foreground"}`}>
+                {label}
+            </span>
+            <span className={`text-sm ${bold ? "font-semibold" : "font-medium"}`}>
+                {value}
+            </span>
         </div>
     );
 }

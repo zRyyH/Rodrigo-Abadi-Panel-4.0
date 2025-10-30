@@ -1,8 +1,8 @@
 // Importa o módulo tokenStorage que contém funções utilitárias para manipular tokens no armazenamento local
 import { tokenStorage } from '@/utils/tokenStorage';
 
-// Importa a constante API_BASE_URL que contém a URL base da API para fazer requisições
-import { API_BASE_URL } from '@/config/axios';
+// Importa a constante DIRECTUS_BASE_URL que contém a URL base da API para fazer requisições
+import { DIRECTUS_BASE_URL } from '@/config/directus';
 
 // Importa a biblioteca axios para realizar requisições HTTP
 import axios from 'axios';
@@ -20,7 +20,7 @@ export const refreshTokenService = async () => {
 
     // Faz uma requisição POST para o endpoint de refresh da API, aguardando a resposta
     // Envia o refreshToken no corpo da requisição para validação no servidor
-    const response = await axios.post(`${API_BASE_URL}/auth/refresh`, {
+    const response = await axios.post(`${DIRECTUS_BASE_URL}/auth/refresh`, {
         refreshToken,
     });
 

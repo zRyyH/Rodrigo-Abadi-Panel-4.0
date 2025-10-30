@@ -8,7 +8,7 @@ import { tokenStorage } from '@/utils/tokenStorage';
 import { refreshQueue } from '@/utils/refreshQueue';
 
 // Importa a instância configurada do axios para fazer requisições HTTP
-import { api } from '@/config/axios';
+import { directus } from '@/config/directus';
 
 // Função auxiliar para redirecionar o usuário para a página de login
 const redirectToLogin = () => {
@@ -52,7 +52,7 @@ export const responseErrorInterceptor = async (error) => {
             // Atualiza o header de autorização da requisição original com o novo token
             originalRequest.headers.Authorization = `Bearer ${token}`;
             // Tenta executar novamente a requisição original com o novo token
-            return api(originalRequest);
+            return directus(originalRequest);
         }
 
         // Marca que esta requisição já tentou renovar o token (evita loop infinito)
@@ -66,7 +66,7 @@ export const responseErrorInterceptor = async (error) => {
             const accessToken = await refreshTokenService();
 
             // Atualiza o header padrão do axios com o novo token
-            api.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+            directus.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
             // Atualiza o header da requisição original com o novo token
             originalRequest.headers.Authorization = `Bearer ${accessToken}`;
@@ -76,7 +76,7 @@ export const responseErrorInterceptor = async (error) => {
             refreshQueue.processQueue(null, accessToken);
 
             // Tenta executar novamente a requisição original com o novo token
-            return api(originalRequest);
+            return directus(originalRequest);
 
         } catch (refreshError) {
             // Se a renovação do token falhar, processa a fila passando o erro
