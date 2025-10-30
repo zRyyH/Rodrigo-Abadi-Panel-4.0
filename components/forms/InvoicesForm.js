@@ -13,8 +13,11 @@ export default function InvoicesForm({
     onSubmit,
     onCancel,
     loading = false,
-    originOptions = []
+    originOptions = [],
+    mode = "create"
 }) {
+    const isEditMode = mode === "edit";
+
     const handleChange = (field, value) => {
         setFormData({ ...formData, [field]: value });
     };
@@ -57,7 +60,7 @@ export default function InvoicesForm({
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="origin_id">
+                            <Label htmlFor="origin_id" >
                                 Origem <span className="text-destructive">*</span>
                             </Label>
                             <Select
@@ -66,20 +69,20 @@ export default function InvoicesForm({
                                 disabled={loading}
                                 required
                             >
-                                <SelectTrigger id="origin_id">
+                                <SelectTrigger id="origin_id" className="cursor-pointer">
                                     <SelectValue placeholder="Selecionar origem..." />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {originOptions.length > 0 ? (
                                         originOptions.map((option) => (
-                                            <SelectItem key={option.value} value={option.value.toString()}>
+                                            <SelectItem key={option.value} value={option.value.toString()} className="cursor-pointer">
                                                 {option.label}
                                             </SelectItem>
                                         ))
                                     ) : (
                                         <>
-                                            <SelectItem value="36">Nacional</SelectItem>
-                                            <SelectItem value="37">Importado</SelectItem>
+                                            <SelectItem value="42">Nacional</SelectItem>
+                                            <SelectItem value="44">Importado</SelectItem>
                                         </>
                                     )}
                                 </SelectContent>
@@ -116,11 +119,11 @@ export default function InvoicesForm({
                     </FieldGroup>
 
                     <div className="flex gap-2">
-                        <Button type="submit" disabled={loading}>
-                            {loading ? "Criando..." : "Criar"}
+                        <Button type="submit" disabled={loading} className="cursor-pointer" >
+                            {loading ? "Salvando..." : isEditMode ? "Salvar" : "Criar"}
                         </Button>
                         {onCancel && (
-                            <Button type="button" variant="outline" onClick={onCancel} disabled={loading}>
+                            <Button type="button" variant="outline" onClick={onCancel} disabled={loading} className="cursor-pointer">
                                 Cancelar
                             </Button>
                         )}

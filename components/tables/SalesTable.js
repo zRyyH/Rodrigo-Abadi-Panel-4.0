@@ -11,8 +11,11 @@ import {
 import { Card } from "@/components/ui/card";
 import { EmptyTable } from "./Empty";
 import { TableLoading } from "@/components/common/TableLoading";
+import { useRouter } from 'next/navigation';
 
-export function SalesTable({ rows, onRowClick, loading }) {
+export function SalesTable({ rows, loading }) {
+    const router = useRouter();
+
     if (loading) {
         return <TableLoading columns={[]} message="Carregando..." />;
     }
@@ -44,7 +47,7 @@ export function SalesTable({ rows, onRowClick, loading }) {
                         rows.map((sale) => (
                             <TableRow
                                 key={sale.id}
-                                onClick={() => onRowClick?.(sale)}
+                                onClick={() => router.push(`/sales/${sale.id}`)}
                                 className="cursor-pointer"
                             >
                                 <TableCell className="truncate">{sale.sale_id}</TableCell>

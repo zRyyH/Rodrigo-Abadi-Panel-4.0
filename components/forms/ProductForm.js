@@ -14,8 +14,8 @@ export default function ProductForm({
     onCancel,
     loading = false,
     mode = "create",
-    packagingOptions = [],
-    supplierOptions = []
+    package_idOptions = [],
+    supplier_idOptions = []
 }) {
     const isEditMode = mode === "edit";
 
@@ -49,14 +49,14 @@ export default function ProductForm({
                         {/* Left Column - Form Fields */}
                         <div className="space-y-4">
                             <div className="space-y-2">
-                                <Label htmlFor="productName">
+                                <Label htmlFor="name">
                                     Nome do produto <span className="text-destructive">*</span>
                                 </Label>
                                 <Input
-                                    id="productName"
+                                    id="name"
                                     placeholder="Digite o nome do produto..."
-                                    value={formData.productName || ""}
-                                    onChange={(e) => handleChange("productName", e.target.value)}
+                                    value={formData.name || ""}
+                                    onChange={(e) => handleChange("name", e.target.value)}
                                     disabled={loading}
                                     required
                                 />
@@ -92,36 +92,36 @@ export default function ProductForm({
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="cost">
+                                <Label htmlFor="purchase_cost">
                                     Custo <span className="text-destructive">*</span>
                                 </Label>
                                 <Input
-                                    id="cost"
+                                    id="purchase_cost"
                                     type="number"
                                     step="0.01"
                                     placeholder="Digite o custo..."
-                                    value={formData.cost || ""}
-                                    onChange={(e) => handleChange("cost", e.target.value)}
+                                    value={formData.purchase_cost || ""}
+                                    onChange={(e) => handleChange("purchase_cost", e.target.value)}
                                     disabled={loading}
                                     required
                                 />
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="packaging">
+                                <Label htmlFor="package_id">
                                     Embalagem <span className="text-destructive">*</span>
                                 </Label>
                                 <Select
-                                    value={formData.packaging?.toString() || ""}
-                                    onValueChange={(value) => handleChange("packaging", value)}
+                                    value={formData.package_id?.toString() || ""}
+                                    onValueChange={(value) => handleChange("package_id", value)}
                                     disabled={loading}
                                     required
                                 >
-                                    <SelectTrigger id="packaging">
+                                    <SelectTrigger id="package_id">
                                         <SelectValue placeholder="Selecionar embalagem..." />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        {packagingOptions.map((option) => (
+                                        {package_idOptions.map((option) => (
                                             <SelectItem key={option.value} value={option.value.toString()}>
                                                 {option.label}
                                             </SelectItem>
@@ -131,20 +131,20 @@ export default function ProductForm({
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="supplier">
+                                <Label htmlFor="supplier_id">
                                     Fornecedor <span className="text-destructive">*</span>
                                 </Label>
                                 <Select
-                                    value={formData.supplier?.toString() || ""}
-                                    onValueChange={(value) => handleChange("supplier", value)}
+                                    value={formData.supplier_id?.toString() || ""}
+                                    onValueChange={(value) => handleChange("supplier_id", value)}
                                     disabled={loading}
                                     required
                                 >
-                                    <SelectTrigger id="supplier">
+                                    <SelectTrigger id="supplier_id">
                                         <SelectValue placeholder="Selecionar fornecedor..." />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        {supplierOptions.map((option) => (
+                                        {supplier_idOptions.map((option) => (
                                             <SelectItem key={option.value} value={option.value.toString()}>
                                                 {option.label}
                                             </SelectItem>

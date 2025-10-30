@@ -14,7 +14,7 @@ import { Card } from "@/components/ui/card";
 import { EmptyTable } from "./Empty";
 import { TableLoading } from "@/components/common/TableLoading";
 
-export function OriginsTable({ rows, onRemove, loading }) {
+export function OriginsTable({ rows, onDelete, loading }) {
     if (loading) {
         return <TableLoading columns={[]} message="Carregando..." />;
     }
@@ -42,10 +42,10 @@ export function OriginsTable({ rows, onRemove, loading }) {
                                     size="icon-sm"
                                     onClick={(e) => {
                                         e.stopPropagation()
-                                        onRemove(origin)
+                                        onDelete(origin)
                                     }}
                                     aria-label="Remover origem"
-                                    className="cursor-pointer"
+                                    className="size-8 text-destructive hover:text-destructive cursor-pointer"
                                 >
                                     <Trash2 className="size-4" />
                                 </Button>

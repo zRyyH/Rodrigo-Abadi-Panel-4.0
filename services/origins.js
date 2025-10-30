@@ -20,7 +20,7 @@ export const originsService = {
     create: async (data) => {
         return await directus.post('/items/origins', data);
     },
-    update: async (id) => {
+    update: async (id, data) => {
         return await directus.patch(`/items/origins/${id}`, data);
     },
     delete: async (id) => {

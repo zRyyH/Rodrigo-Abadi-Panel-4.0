@@ -14,13 +14,15 @@ import { PencilIcon, Trash2Icon } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { EmptyTable } from "./Empty";
 import { TableLoading } from "@/components/common/TableLoading";
+import { useRouter } from "next/navigation";
 
 export function ProductsTable({
     rows,
-    onEdit,
     onDelete,
     loading
 }) {
+    const router = useRouter();
+
     if (loading) {
         return <TableLoading columns={[]} message="Carregando..." />;
     }
@@ -51,7 +53,7 @@ export function ProductsTable({
                             <TableCell>
                                 <Avatar className="size-10">
                                     <AvatarImage src={item.image} alt={item.name} />
-                                    <AvatarFallback>{item.name.charAt(0)}</AvatarFallback>
+                                    <AvatarFallback>{"P"}</AvatarFallback>
                                 </Avatar>
                             </TableCell>
                             <TableCell className="font-mono text-sm">{item.sku}</TableCell>
@@ -68,10 +70,7 @@ export function ProductsTable({
                                         variant="ghost"
                                         size="icon-sm"
                                         className="size-8 cursor-pointer"
-                                        onClick={(e) => {
-                                            e.stopPropagation()
-                                            onEdit?.(item)
-                                        }}
+                                        onClick={() => router.push(`/products/edit/${item.id}`)}
                                     >
                                         <PencilIcon className="size-4" />
                                     </Button>

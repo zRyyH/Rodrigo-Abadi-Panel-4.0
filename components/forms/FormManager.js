@@ -52,6 +52,8 @@ export default function FormManager({
     }, [fetchedData]);
 
     const handleSubmit = (e) => {
+        console.log(e)
+
         e?.preventDefault();
         (isEditMode ? updateMutation : createMutation).mutate(formData);
     };

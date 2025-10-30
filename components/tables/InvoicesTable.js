@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useRouter } from 'next/navigation';
-import { Trash2 } from "lucide-react";
+import { Trash2Icon, PencilIcon } from "lucide-react";
 import { EmptyTable } from "./Empty";
 import { TableLoading } from "@/components/common/TableLoading";
 
@@ -41,8 +41,6 @@ export function InvoicesTable({ rows, onDelete, loading }) {
                     {rows.map((invoice) => (
                         <TableRow
                             key={invoice.id}
-                            onClick={() => router.push(`/invoices/edit/${invoice.id}`)}
-                            className="cursor-pointer"
                         >
                             <TableCell className="font-medium">{invoice.product_name}</TableCell>
                             <TableCell>{invoice.quantity}</TableCell>
@@ -50,13 +48,25 @@ export function InvoicesTable({ rows, onDelete, loading }) {
                             <TableCell>{invoice.cest}</TableCell>
                             <TableCell>{invoice.origin_id}</TableCell>
                             <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
-                                <div className="flex justify-end gap-2">
+                                <div className="flex items-center justify-end gap-2">
                                     <Button
                                         variant="ghost"
                                         size="icon-sm"
-                                        onClick={() => onDelete(invoice)}
+                                        className="size-8 cursor-pointer"
+                                        onClick={() => router.push(`/invoices/edit/${invoice.id}`)}
                                     >
-                                        <Trash2 />
+                                        <PencilIcon className="size-4" />
+                                    </Button>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon-sm"
+                                        className="size-8 text-destructive hover:text-destructive cursor-pointer"
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            onDelete?.(invoice)
+                                        }}
+                                    >
+                                        <Trash2Icon className="size-4" />
                                     </Button>
                                 </div>
                             </TableCell>

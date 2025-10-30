@@ -6,15 +6,14 @@ import { productsService } from "@/services/products";
 
 export default function CreateProductPage() {
     const packagingOptions = [
-        { value: 13, label: "Caixa" },
-        { value: 14, label: "Pacote" },
-        { value: 15, label: "Unidade" },
+        { value: 16, label: "Caixa" },
+        { value: 17, label: "Pacote" },
     ];
 
     const supplierOptions = [
-        { value: 8, label: "Fornecedor A Ltda" },
-        { value: 9, label: "Fornecedor B S/A" },
-        { value: 10, label: "Fornecedor C EIRELI" },
+        { value: 12, label: "Fornecedor A Ltda" },
+        { value: 14, label: "Fornecedor B S/A" },
+        { value: 15, label: "Fornecedor C EIRELI" },
     ];
 
     return (
@@ -42,8 +41,8 @@ export default function CreateProductPage() {
                 }}
             >
                 <ProductForm
-                    packagingOptions={packagingOptions}
-                    supplierOptions={supplierOptions}
+                    package_idOptions={packagingOptions}
+                    supplier_idOptions={supplierOptions}
                 />
             </FormManager>
         </div>

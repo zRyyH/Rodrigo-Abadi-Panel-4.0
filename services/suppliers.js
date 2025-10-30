@@ -21,7 +21,7 @@ export const suppliersService = {
     create: async (data) => {
         return await directus.post('/items/suppliers', data);
     },
-    update: async (id) => {
+    update: async (id, data) => {
         return await directus.patch(`/items/suppliers/${id}`, data);
     },
     delete: async (id) => {

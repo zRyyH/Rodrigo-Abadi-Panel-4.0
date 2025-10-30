@@ -1,33 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import FormManager from "@/components/forms/FormManager";
 import InvoicesForm from "@/components/forms/InvoicesForm";
-import { useCrud } from "@/hooks/useCrud";
 import { invoicesService } from "@/services/invoices";
-import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 
-export default function EditInvoices() {
-    const [form, setForm] = useState({ name: '', email: '' });
+export default function InvoicePage() {
     const params = useParams();
 
-    const { update, isUpdating, isLoadingItem, loadForEdit } = useCrud(invoicesService, {
-        queryKey: 'invoices',
-        title: 'Nota',
-        autoLoadId: params.id,
-        onLoadForEdit: (item) => {
-            console.log(item)
-        },
-        redirects: {
-            update: '/invoices'
-        }
-    });
-
     return (
-        <InvoicesForm
-            formData={form}
-            setFormData={setForm}
-            onSubmit={() => update(form)}
-        />
+        <div className="animate-fadeSlideIn" >
+            <FormManager
+                queryKey="invoices"
+                queryFn={invoicesService.getById}
+                createFn={invoicesService.create}
+                updateFn={invoicesService.update}
+                redirectTo="/invoices"
+                itemId={params.id}
+                initialData={{ product_name: "", quantity: "", ncm: "", cest: "", origin_id: "" }}
+            >
+                <InvoicesForm mode="edit" />
+            </FormManager>
+        </div>
     );
 }

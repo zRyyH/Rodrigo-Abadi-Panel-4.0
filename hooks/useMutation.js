@@ -1,17 +1,17 @@
 "use client";
 
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation as useMutationApi, useQueryClient } from '@tanstack/react-query';
 import { useNotification } from "@/hooks/useNotification";
 import { useRouter } from 'next/navigation';
 
-export function useMutationWithFeedback(service, options = {}) {
+export function useMutation(service, options = {}) {
     const { title, msg, redirect, invalidateQueryKey } = options;
 
     const { success, error } = useNotification();
     const queryClient = useQueryClient();
     const router = useRouter();
 
-    const mutation = useMutation({
+    const mutation = useMutationApi({
         mutationFn: async (...params) => service(...params),
         onSuccess: () => {
             if (title && msg) success(title, msg);

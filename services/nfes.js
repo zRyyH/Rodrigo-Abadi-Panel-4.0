@@ -21,7 +21,7 @@ export const nfesService = {
     create: async (data) => {
         return await directus.post('/items/nfes', data);
     },
-    update: async (id) => {
+    update: async (id, data) => {
         return await directus.patch(`/items/nfes/${id}`, data);
     },
     delete: async (id) => {

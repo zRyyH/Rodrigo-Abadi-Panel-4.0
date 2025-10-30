@@ -12,7 +12,9 @@ export const productsService = {
         })
 
         const { data } = await directus.get('/items/products', { params });
-        return transformData(data?.data, transformProduct);
+        const a = transformData(data?.data, transformProduct);
+        console.log("dasdsdsa", a)
+        return a
     },
     getById: async (id) => {
         const { data } = await directus.get(`/items/products/${id}`);
@@ -21,7 +23,7 @@ export const productsService = {
     create: async (data) => {
         return await directus.post('/items/products', data);
     },
-    update: async (id) => {
+    update: async (id, data) => {
         return await directus.patch(`/items/products/${id}`, data);
     },
     delete: async (id) => {

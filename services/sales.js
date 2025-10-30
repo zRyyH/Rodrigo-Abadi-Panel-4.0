@@ -22,7 +22,7 @@ export const salesService = {
     create: async (data) => {
         return await directus.post('/items/sales', data);
     },
-    update: async (id) => {
+    update: async (id, data) => {
         return await directus.patch(`/items/sales/${id}`, data);
     },
     delete: async (id) => {

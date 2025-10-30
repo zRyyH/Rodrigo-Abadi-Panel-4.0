@@ -14,11 +14,11 @@ import { Card } from "@/components/ui/card";
 import { EmptyTable } from "./Empty";
 import { TableLoading } from "@/components/common/TableLoading";
 
-export function PackagesTable({ rows, onRemove, loading }) {
+export function PackagesTable({ rows, onDelete, loading }) {
     if (loading) {
         return <TableLoading columns={[]} message="Carregando..." />;
     }
-    
+
     if (rows.length < 1) return <EmptyTable />
 
     return (
@@ -34,7 +34,6 @@ export function PackagesTable({ rows, onRemove, loading }) {
                     {rows.map((pack) => (
                         <TableRow
                             key={pack.id}
-                            className="cursor-pointer"
                         >
                             <TableCell className="font-medium">{pack.type_of_packaging}</TableCell>
                             <TableCell className="text-right">
@@ -43,9 +42,10 @@ export function PackagesTable({ rows, onRemove, loading }) {
                                     size="icon-sm"
                                     onClick={(e) => {
                                         e.stopPropagation()
-                                        onRemove(pack)
+                                        onDelete(pack)
                                     }}
                                     aria-label="Remover fornecedor"
+                                    className="size-8 text-destructive hover:text-destructive cursor-pointer"
                                 >
                                     <Trash2 className="size-4" />
                                 </Button>

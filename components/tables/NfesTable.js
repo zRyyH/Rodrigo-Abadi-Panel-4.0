@@ -18,7 +18,7 @@ export function NfesTable({ rows = [], onRowClick, onDownloadPdf, onDownloadXml,
     if (loading) {
         return <TableLoading columns={[]} message="Carregando..." />;
     }
-    
+
     if (rows.length < 1) return <EmptyTable />
 
     const isValidFile = (file) => {
