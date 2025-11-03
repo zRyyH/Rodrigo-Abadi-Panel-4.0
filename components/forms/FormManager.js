@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, cloneElement } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState, useEffect, cloneElement } from "react";
+import { useNotification } from "@/hooks/useNotification";
 import { useRouter } from "next/navigation";
 
 export default function FormManager({
@@ -13,13 +14,14 @@ export default function FormManager({
     itemId = null,
     redirectTo,
     initialData = {},
-    onSuccess,
-    onError,
+    onSuccess
 }) {
-    const router = useRouter();
-    const queryClient = useQueryClient();
     const [formData, setFormData] = useState(initialData);
+    
+    const { success, error } = useNotification();
+    const queryClient = useQueryClient();
     const isEditMode = Boolean(itemId);
+    const router = useRouter();
 
     const { data: fetchedData, isLoading: isLoadingData } = useQuery({
         queryKey: [queryKey, itemId],
@@ -33,8 +35,11 @@ export default function FormManager({
             queryClient.invalidateQueries({ queryKey: [queryKey] });
             onSuccess?.(data);
             if (redirectTo) router.push(redirectTo);
+            success("Create", "Item atualizado com sucesso")
         },
-        onError,
+        onError: (e) => {
+            error("Create", "Ops... Ocorreu um erro")
+        },
     });
 
     const updateMutation = useMutation({
@@ -43,8 +48,11 @@ export default function FormManager({
             queryClient.invalidateQueries({ queryKey: [queryKey] });
             onSuccess?.(data);
             if (redirectTo) router.push(redirectTo);
+            success("Update", "Item atualizado com sucesso")
         },
-        onError,
+        onError: (e) => {
+            error("Update", "Ops... Ocorreu um erro")
+        },
     });
 
     useEffect(() => {

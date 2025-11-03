@@ -1,11 +1,12 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Field, FieldGroup } from "@/components/ui/field";
+import { originsService } from "@/services/origins";
+import { FieldGroup } from "@/components/ui/field";
+
+import SelectSmart from "@/components/forms/inputs/Select";
+import FormActions from "@/components/forms/inputs/Submit";
+import LabeledInput from "@/components/forms/inputs/Input";
 
 export default function InvoicesForm({
     formData = {},
@@ -13,7 +14,6 @@ export default function InvoicesForm({
     onSubmit,
     onCancel,
     loading = false,
-    originOptions = [],
     mode = "create"
 }) {
     const isEditMode = mode === "edit";
@@ -30,104 +30,61 @@ export default function InvoicesForm({
             <CardContent>
                 <form onSubmit={onSubmit} className="space-y-6">
                     <FieldGroup>
-                        <div className="space-y-2">
-                            <Label htmlFor="product_name">
-                                Nome do produto <span className="text-destructive">*</span>
-                            </Label>
-                            <Input
-                                id="product_name"
-                                placeholder="Digite o nome do produto..."
-                                value={formData.product_name || ""}
-                                onChange={(e) => handleChange("product_name", e.target.value)}
-                                disabled={loading}
-                                required
-                            />
-                        </div>
+                        <LabeledInput
+                            id="product_name"
+                            label="Nome do produto"
+                            placeholder="Digite o nome do produto..."
+                            value={formData.product_name || ""}
+                            onChange={(value) => handleChange("product_name", value)}
+                            required
+                        />
 
-                        <div className="space-y-2">
-                            <Label htmlFor="quantity">
-                                Quantidade <span className="text-destructive">*</span>
-                            </Label>
-                            <Input
-                                id="quantity"
-                                type="number"
-                                placeholder="Digite a quantidade..."
-                                value={formData.quantity || ""}
-                                onChange={(e) => handleChange("quantity", e.target.value)}
-                                disabled={loading}
-                                required
-                            />
-                        </div>
+                        <LabeledInput
+                            id="quantity"
+                            label="Quantidade"
+                            placeholder="Digite a quantidade..."
+                            value={formData.quantity || ""}
+                            onChange={(value) => handleChange("quantity", value)}
+                            required
+                        />
 
-                        <div className="space-y-2">
-                            <Label htmlFor="origin_id" >
-                                Origem <span className="text-destructive">*</span>
-                            </Label>
-                            <Select
-                                value={formData.origin_id?.toString() || ""}
-                                onValueChange={(value) => handleChange("origin_id", value)}
-                                disabled={loading}
-                                required
-                            >
-                                <SelectTrigger id="origin_id" className="cursor-pointer">
-                                    <SelectValue placeholder="Selecionar origem..." />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {originOptions.length > 0 ? (
-                                        originOptions.map((option) => (
-                                            <SelectItem key={option.value} value={option.value.toString()} className="cursor-pointer">
-                                                {option.label}
-                                            </SelectItem>
-                                        ))
-                                    ) : (
-                                        <>
-                                            <SelectItem value="42">Nacional</SelectItem>
-                                            <SelectItem value="44">Importado</SelectItem>
-                                        </>
-                                    )}
-                                </SelectContent>
-                            </Select>
-                        </div>
+                        <SelectSmart
+                            label="Origem"
+                            placeholder="Selecionar origem..."
+                            queryKey="origins"
+                            service={originsService.getAll}
+                            value={formData.origin_id}
+                            onValueChange={(e) => handleChange("origin_id", e)}
+                            valueKey="id"
+                            labelKey="origin"
+                            required
+                            id="origin-select"
+                        />
 
-                        <div className="space-y-2">
-                            <Label htmlFor="ncm">
-                                NCM <span className="text-destructive">*</span>
-                            </Label>
-                            <Input
-                                id="ncm"
-                                placeholder="Digite o NCM..."
-                                value={formData.ncm || ""}
-                                onChange={(e) => handleChange("ncm", e.target.value)}
-                                disabled={loading}
-                                required
-                            />
-                        </div>
+                        <LabeledInput
+                            id="ncm"
+                            label="NCM"
+                            placeholder="Digite o NCM..."
+                            value={formData.ncm || ""}
+                            onChange={(value) => handleChange("ncm", value)}
+                            required
+                        />
 
-                        <div className="space-y-2">
-                            <Label htmlFor="cest">
-                                CEST <span className="text-destructive">*</span>
-                            </Label>
-                            <Input
-                                id="cest"
-                                placeholder="Digite o CEST..."
-                                value={formData.cest || ""}
-                                onChange={(e) => handleChange("cest", e.target.value)}
-                                disabled={loading}
-                                required
-                            />
-                        </div>
+                        <LabeledInput
+                            id="cest"
+                            label="CEST"
+                            placeholder="Digite o CEST..."
+                            value={formData.cest || ""}
+                            onChange={(value) => handleChange("cest", value)}
+                            required
+                        />
                     </FieldGroup>
 
-                    <div className="flex gap-2">
-                        <Button type="submit" disabled={loading} className="cursor-pointer" >
-                            {loading ? "Salvando..." : isEditMode ? "Salvar" : "Criar"}
-                        </Button>
-                        {onCancel && (
-                            <Button type="button" variant="outline" onClick={onCancel} disabled={loading} className="cursor-pointer">
-                                Cancelar
-                            </Button>
-                        )}
-                    </div>
+                    <FormActions
+                        loading={loading}
+                        isEditMode={isEditMode}
+                        onCancel={onCancel}
+                    />
                 </form>
             </CardContent>
         </Card>

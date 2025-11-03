@@ -1,0 +1,32 @@
+{
+    "files.exclude": {
+        "**/.git": false,
+        "**/.svn": false,
+        "**/.hg": false,
+        "**/.DS_Store": false,
+        "**/Thumbs.db": false,
+        "tsconfig.json": true,
+        "README.md": true,
+        "postcss.config.mjs": true,
+        "package.json": true,
+        "package-lock.json": true,
+        "next.config.ts": true,
+        "next-env.d.ts": true,
+        "jsconfig.json": true,
+        "eslint.config.mjs": true,
+        "components.json": true,
+        ".gitignore": true,
+        ".env.example": true,
+        ".env": true,
+        "node_modules": true,
+        ".vscode": true,
+        ".next": true,
+        ".git": true,
+        "components/ui": true,
+        "lib/utils.ts": true,
+        "public": true,
+        "hooks/use-mobile.ts": true,
+        "app/favicon.ico": true
+    },
+    "explorerExclude.backup": {}
+}

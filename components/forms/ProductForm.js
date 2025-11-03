@@ -1,11 +1,12 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { UploadIcon, XIcon } from "lucide-react";
+import { suppliersService } from "@/services/suppliers";
+import { packagesService } from "@/services/packages";
+
+import SelectSmart from "@/components/forms/inputs/Select";
+import FormActions from "@/components/forms/inputs/Submit";
+import LabeledInput from "@/components/forms/inputs/Input";
 
 export default function ProductForm({
     formData = {},
@@ -13,9 +14,7 @@ export default function ProductForm({
     onSubmit,
     onCancel,
     loading = false,
-    mode = "create",
-    package_idOptions = [],
-    supplier_idOptions = []
+    mode = "create"
 }) {
     const isEditMode = mode === "edit";
 
@@ -46,143 +45,89 @@ export default function ProductForm({
             <CardContent>
                 <form onSubmit={onSubmit} className="space-y-6">
                     <div className="grid gap-6 md:grid-cols-2">
-                        {/* Left Column - Form Fields */}
                         <div className="space-y-4">
-                            <div className="space-y-2">
-                                <Label htmlFor="name">
-                                    Nome do produto <span className="text-destructive">*</span>
-                                </Label>
-                                <Input
-                                    id="name"
-                                    placeholder="Digite o nome do produto..."
-                                    value={formData.name || ""}
-                                    onChange={(e) => handleChange("name", e.target.value)}
-                                    disabled={loading}
-                                    required
-                                />
-                            </div>
+                            <LabeledInput
+                                id="name"
+                                label="Nome"
+                                placeholder="Digite o nome do fornecedor..."
+                                value={formData.name || ""}
+                                onChange={(value) => handleChange("name", value)}
+                                required
+                            />
 
-                            <div className="space-y-2">
-                                <Label htmlFor="sku">
-                                    SKU <span className="text-destructive">*</span>
-                                </Label>
-                                <Input
-                                    id="sku"
-                                    placeholder="Digite o SKU..."
-                                    value={formData.sku || ""}
-                                    onChange={(e) => handleChange("sku", e.target.value)}
-                                    disabled={loading}
-                                    required
-                                />
-                            </div>
+                            <LabeledInput
+                                id="sku"
+                                label="SKU"
+                                placeholder="Digite o nome do fornecedor..."
+                                value={formData.sku || ""}
+                                onChange={(value) => handleChange("sku", value)}
+                                required
+                            />
 
-                            <div className="space-y-2">
-                                <Label htmlFor="quantity">
-                                    Quantidade <span className="text-destructive">*</span>
-                                </Label>
-                                <Input
-                                    id="quantity"
-                                    type="number"
-                                    placeholder="Digite a quantidade..."
-                                    value={formData.quantity || ""}
-                                    onChange={(e) => handleChange("quantity", e.target.value)}
-                                    disabled={loading}
-                                    required
-                                />
-                            </div>
+                            <LabeledInput
+                                id="quantity"
+                                label="Quantidade"
+                                placeholder="Digite a quantidade..."
+                                value={formData.quantity || ""}
+                                onChange={(value) => handleChange("quantity", value)}
+                                required
+                            />
 
-                            <div className="space-y-2">
-                                <Label htmlFor="purchase_cost">
-                                    Custo <span className="text-destructive">*</span>
-                                </Label>
-                                <Input
-                                    id="purchase_cost"
-                                    type="number"
-                                    step="0.01"
-                                    placeholder="Digite o custo..."
-                                    value={formData.purchase_cost || ""}
-                                    onChange={(e) => handleChange("purchase_cost", e.target.value)}
-                                    disabled={loading}
-                                    required
-                                />
-                            </div>
+                            <LabeledInput
+                                id="purchase_cost"
+                                label="Custo"
+                                placeholder="Digite o custo do produto..."
+                                value={formData.purchase_cost || ""}
+                                onChange={(value) => handleChange("purchase_cost", value)}
+                                required
+                            />
 
-                            <div className="space-y-2">
-                                <Label htmlFor="package_id">
-                                    Embalagem <span className="text-destructive">*</span>
-                                </Label>
-                                <Select
-                                    value={formData.package_id?.toString() || ""}
-                                    onValueChange={(value) => handleChange("package_id", value)}
-                                    disabled={loading}
-                                    required
-                                >
-                                    <SelectTrigger id="package_id">
-                                        <SelectValue placeholder="Selecionar embalagem..." />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {package_idOptions.map((option) => (
-                                            <SelectItem key={option.value} value={option.value.toString()}>
-                                                {option.label}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                            </div>
+                            <SelectSmart
+                                label="Embalagem"
+                                placeholder="Selecionar embalagem..."
+                                queryKey="packages"
+                                service={packagesService.getAll}
+                                value={formData.package_id}
+                                onValueChange={(e) => handleChange("package_id", e)}
+                                valueKey="id"
+                                labelKey="type_of_packaging"
+                                required
+                                id="package-id-select"
+                            />
 
-                            <div className="space-y-2">
-                                <Label htmlFor="supplier_id">
-                                    Fornecedor <span className="text-destructive">*</span>
-                                </Label>
-                                <Select
-                                    value={formData.supplier_id?.toString() || ""}
-                                    onValueChange={(value) => handleChange("supplier_id", value)}
-                                    disabled={loading}
-                                    required
-                                >
-                                    <SelectTrigger id="supplier_id">
-                                        <SelectValue placeholder="Selecionar fornecedor..." />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {supplier_idOptions.map((option) => (
-                                            <SelectItem key={option.value} value={option.value.toString()}>
-                                                {option.label}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                            </div>
+                            <SelectSmart
+                                label="Fornecedor"
+                                placeholder="Selecionar fornecedor..."
+                                queryKey="suppliers"
+                                service={suppliersService.getAll}
+                                value={formData.supplier_id}
+                                onValueChange={(e) => handleChange("supplier_id", e)}
+                                valueKey="id"
+                                labelKey="supplier_name"
+                                required
+                                id="supplier-name-select"
+                            />
 
-                            <div className="space-y-2">
-                                <Label htmlFor="cest">
-                                    CEST <span className="text-destructive">*</span>
-                                </Label>
-                                <Input
-                                    id="cest"
-                                    placeholder="Digite o CEST..."
-                                    value={formData.cest || ""}
-                                    onChange={(e) => handleChange("cest", e.target.value)}
-                                    disabled={loading}
-                                    required
-                                />
-                            </div>
+                            <LabeledInput
+                                id="cest"
+                                label="CEST"
+                                placeholder="Digite o CEST..."
+                                value={formData.cest || ""}
+                                onChange={(value) => handleChange("cest", value)}
+                                required
+                            />
 
-                            <div className="space-y-2">
-                                <Label htmlFor="ncm">
-                                    NCM <span className="text-destructive">*</span>
-                                </Label>
-                                <Input
-                                    id="ncm"
-                                    placeholder="Digite o NCM..."
-                                    value={formData.ncm || ""}
-                                    onChange={(e) => handleChange("ncm", e.target.value)}
-                                    disabled={loading}
-                                    required
-                                />
-                            </div>
+                            <LabeledInput
+                                id="ncm"
+                                label="NCM"
+                                placeholder="Digite o NCM..."
+                                value={formData.ncm || ""}
+                                onChange={(value) => handleChange("ncm", value)}
+                                required
+                            />
                         </div>
 
-                        {/* Right Column - Image Upload */}
+                        {/* Right Column - Image Upload
                         <div className="space-y-2">
                             <Label>Imagem do produto</Label>
                             <div className="relative">
@@ -224,20 +169,14 @@ export default function ProductForm({
                                     </label>
                                 )}
                             </div>
-                        </div>
+                        </div> */}
                     </div>
 
-                    {/* Action Buttons */}
-                    <div className="flex gap-4">
-                        <Button type="submit" disabled={loading}>
-                            {loading ? "Salvando..." : isEditMode ? "Salvar" : "Criar"}
-                        </Button>
-                        {onCancel && (
-                            <Button type="button" variant="outline" onClick={onCancel} disabled={loading}>
-                                Cancelar
-                            </Button>
-                        )}
-                    </div>
+                    <FormActions
+                        loading={loading}
+                        isEditMode={isEditMode}
+                        onCancel={onCancel}
+                    />
                 </form>
             </CardContent>
         </Card>

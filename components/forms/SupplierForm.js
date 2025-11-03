@@ -1,9 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+import FormActions from "@/components/forms/inputs/Submit";
+import LabeledInput from "@/components/forms/inputs/Input";
 
 export default function SupplierForm({
     formData = {},
@@ -15,41 +15,31 @@ export default function SupplierForm({
 }) {
     const isEditMode = mode === "edit";
 
-    const handleChange = (value) => {
-        setFormData({ ...formData, supplier_name: value });
+    const handleChange = (field, value) => {
+        setFormData({ ...formData, [field]: value });
     };
 
     return (
         <Card>
             <CardHeader>
-                <CardTitle>{isEditMode ? "Editar Fornecedor" : "Criar Fornecedor"}</CardTitle>
+                <CardTitle>Criar Fornecedor</CardTitle>
             </CardHeader>
             <CardContent>
                 <form onSubmit={onSubmit} className="space-y-6">
-                    <div className="space-y-2">
-                        <Label htmlFor="supplier">
-                            Fornecedor <span className="text-destructive">*</span>
-                        </Label>
-                        <Input
-                            id="supplier"
-                            placeholder="Digite o fornecedor..."
-                            value={formData.supplier_name || ""}
-                            onChange={(e) => handleChange(e.target.value)}
-                            disabled={loading}
-                            required
-                        />
-                    </div>
+                    <LabeledInput
+                        id="supplier_name"
+                        label="Fornecedor"
+                        placeholder="Digite o nome do fornecedor..."
+                        value={formData.supplier_name || ""}
+                        onChange={(value) => handleChange("supplier_name", value)}
+                        required
+                    />
 
-                    <div className="flex gap-3">
-                        <Button type="submit" disabled={loading}>
-                            {loading ? "Salvando..." : isEditMode ? "Salvar" : "Criar"}
-                        </Button>
-                        {onCancel && (
-                            <Button type="button" variant="outline" onClick={onCancel} disabled={loading}>
-                                Cancelar
-                            </Button>
-                        )}
-                    </div>
+                    <FormActions
+                        loading={loading}
+                        isEditMode={isEditMode}
+                        onCancel={onCancel}
+                    />
                 </form>
             </CardContent>
         </Card>
