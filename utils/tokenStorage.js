@@ -35,8 +35,6 @@ export const tokenStorage = {
         if (refreshToken) {
             localStorage.setItem('refreshToken', refreshToken);
         }
-
-        console.log("TOKENS SETADOS", accessToken, refreshToken)
     },
 
     // Método para remover os tokens do armazenamento local

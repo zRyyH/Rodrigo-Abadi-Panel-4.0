@@ -35,7 +35,7 @@ export default function FormManager({
             queryClient.invalidateQueries({ queryKey: [queryKey] });
             onSuccess?.(data);
             if (redirectTo) router.push(redirectTo);
-            success("Create", "Item atualizado com sucesso")
+            success("Create", "Item criado com sucesso")
         },
         onError: (e) => {
             error("Create", "Ops... Ocorreu um erro")
@@ -60,8 +60,6 @@ export default function FormManager({
     }, [fetchedData]);
 
     const handleSubmit = (e) => {
-        console.log(e)
-
         e?.preventDefault();
         (isEditMode ? updateMutation : createMutation).mutate(formData);
     };

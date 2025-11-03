@@ -12,9 +12,7 @@ export const productsService = {
         })
 
         const { data } = await directus.get('/items/products', { params });
-        const a = transformData(data?.data, transformProduct);
-        console.log("dasdsdsa", a)
-        return a
+        return transformData(data?.data, transformProduct);
     },
     getById: async (id) => {
         const { data } = await directus.get(`/items/products/${id}`);

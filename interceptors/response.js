@@ -21,11 +21,6 @@ const redirectToLogin = () => {
 
 // Interceptor de resposta para requisições bem-sucedidas
 export const responseInterceptor = (response) => {
-    // Verifica se a aplicação está em modo de desenvolvimento
-    if (process.env.NODE_ENV === 'development') {
-        // Loga no console o método HTTP e a URL da requisição bem-sucedida
-        console.log(`✅ ${response.config.method.toUpperCase()} ${response.config.url}`);
-    }
     // Retorna a resposta inalterada para continuar o fluxo normal
     return response;
 };
@@ -34,12 +29,6 @@ export const responseInterceptor = (response) => {
 export const responseErrorInterceptor = async (error) => {
     // Armazena a configuração da requisição original que falhou
     const originalRequest = error.config;
-
-    // Verifica se a aplicação está em modo de desenvolvimento
-    if (process.env.NODE_ENV === 'development') {
-        // Loga no console o método HTTP e a URL da requisição que falhou
-        console.error(`❌ ${error.config?.method?.toUpperCase()} ${error.config?.url}`);
-    }
 
     // Tratamento específico para erro 401 (não autorizado/token expirado)
     // Verifica se o erro é 401 E se esta requisição ainda não tentou renovar o token

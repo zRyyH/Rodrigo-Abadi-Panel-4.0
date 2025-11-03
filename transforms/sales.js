@@ -9,8 +9,6 @@ export function transformSale(sale) {
 };
 
 export function transformSaleView(sale) {
-    console.log(sale)
-
     return {
         ...sale,
         product: {

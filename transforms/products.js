@@ -2,8 +2,6 @@ import { formatarCEST, formatarNCM, formatarReal } from "@/utils/formatters";
 import { DIRECTUS_BASE_URL } from "@/config/directus";
 
 export function transformProduct(product) {
-    console.log(product)
-
     return {
         ...product,
         image: `${DIRECTUS_BASE_URL}/assets/${product?.photo_ids?.[0]?.directus_files_id?.id}`,

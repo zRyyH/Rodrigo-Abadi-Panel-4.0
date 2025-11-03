@@ -15,14 +15,7 @@ export const requestInterceptor = (config) => {
         // O padrão Bearer é amplamente usado para autenticação baseada em tokens
         config.headers.Authorization = `Bearer ${token}`;
     }
-
-    // Verifica se a aplicação está rodando em ambiente de desenvolvimento
-    // process.env.NODE_ENV é uma variável de ambiente que indica o modo atual
-    if (process.env.NODE_ENV === 'development') {
-        // Loga no console o método HTTP (GET, POST, etc.) em maiúsculas e a URL da requisição
-        // O emoji 📡 facilita a visualização dos logs de requisições durante o debug
-        console.log(`📡 ${config.method.toUpperCase()} ${config.url}`);
-    }
+    
     // Retorna o objeto config modificado para que a requisição possa prosseguir
     // Este retorno é essencial para o interceptador funcionar corretamente
     return config;

@@ -20,7 +20,6 @@ export function useMutation(service, options = {}) {
         },
         onError: (e) => {
             error(title, "Ops... ocorreu um erro :(");
-            console.error(e);
         },
     });
 
