@@ -9,12 +9,12 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { PencilIcon, Trash2Icon } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { EmptyTable } from "./Empty";
 import { TableLoading } from "@/components/common/TableLoading";
 import { useRouter } from "next/navigation";
+import Avatar from "@/components/common/Avatar";
 
 export function ProductsTable({
     rows,
@@ -51,10 +51,7 @@ export function ProductsTable({
                         <TableRow
                             key={item.id} >
                             <TableCell>
-                                <Avatar className="size-10">
-                                    <AvatarImage src={item.image} alt={item.name} />
-                                    <AvatarFallback>{"P"}</AvatarFallback>
-                                </Avatar>
+                                <Avatar imagePath={item.image} />
                             </TableCell>
                             <TableCell className="font-mono text-sm">{item.sku}</TableCell>
                             <TableCell className="font-medium">{item.name}</TableCell>

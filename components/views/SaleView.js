@@ -1,11 +1,12 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { LoadingScreen } from "@/components/common/PageLoading";
 import { FileText, FileCode, Package } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { LoadingScreen } from "@/components/common/PageLoading";
+
+import Avatar from "@/components/common/Avatar";
 
 export default function SaleView({
     product = {},
@@ -63,12 +64,8 @@ export default function SaleView({
                     <CardTitle>Produto</CardTitle>
                 </CardHeader>
                 <CardContent className="flex items-center gap-4">
-                    <Avatar className="size-16">
-                        <AvatarImage src={product.imageUrl} alt={product.name} />
-                        <AvatarFallback>
-                            <Package />
-                        </AvatarFallback>
-                    </Avatar>
+                    <Avatar imagePath={product.imagePath} />
+                    
                     <div className="flex-1 grid grid-cols-3 gap-4">
                         <div>
                             <p className="text-sm text-muted-foreground">Nome</p>

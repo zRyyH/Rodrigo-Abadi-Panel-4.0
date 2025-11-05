@@ -1,8 +1,8 @@
 import { directusToAxiosParams } from "@/utils/serviceUtils";
+import { transformProduct } from "@/transforms/products";
 import { transformData } from '@/utils/serviceUtils';
 import { directus } from '@/lib/directus';
 
-import { transformProduct } from "@/transforms/products";
 
 export const productsService = {
     getAll: async (search = '') => {

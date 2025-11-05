@@ -5,9 +5,6 @@ const DIRECTUS_BASE_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL || 'http://localh
 const directus = axios.create({
     baseURL: DIRECTUS_BASE_URL,
     timeout: 30000,
-    headers: {
-        'Content-Type': 'application/json',
-    },
 });
 
 export { directus, DIRECTUS_BASE_URL };

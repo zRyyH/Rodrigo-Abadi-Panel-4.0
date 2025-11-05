@@ -37,29 +37,21 @@ export function SalesTable({ rows, loading }) {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {rows.length === 0 ? (
-                        <TableRow>
-                            <TableCell colSpan={7} className="text-center text-muted-foreground">
-                                Nenhuma venda encontrada
-                            </TableCell>
+                    {rows.map((sale) => (
+                        <TableRow
+                            key={sale.id}
+                            onClick={() => router.push(`/sales/${sale.id}`)}
+                            className="cursor-pointer"
+                        >
+                            <TableCell className="truncate">{sale.sale_id}</TableCell>
+                            <TableCell className="truncate">{sale.sku}</TableCell>
+                            <TableCell className="truncate">{sale.listing_title}</TableCell>
+                            <TableCell className="truncate">{sale.buyer_name}</TableCell>
+                            <TableCell className="truncate">{sale.listing_id}</TableCell>
+                            <TableCell className="truncate">{sale.formatted_date}</TableCell>
+                            <TableCell className="truncate">{sale.delivery_method}</TableCell>
                         </TableRow>
-                    ) : (
-                        rows.map((sale) => (
-                            <TableRow
-                                key={sale.id}
-                                onClick={() => router.push(`/sales/${sale.id}`)}
-                                className="cursor-pointer"
-                            >
-                                <TableCell className="truncate">{sale.sale_id}</TableCell>
-                                <TableCell className="truncate">{sale.sku}</TableCell>
-                                <TableCell className="truncate">{sale.listing_title}</TableCell>
-                                <TableCell className="truncate">{sale.buyer_name}</TableCell>
-                                <TableCell className="truncate">{sale.listing_id}</TableCell>
-                                <TableCell className="truncate">{sale.formatted_date}</TableCell>
-                                <TableCell className="truncate">{sale.delivery_method}</TableCell>
-                            </TableRow>
-                        ))
-                    )}
+                    ))}
                 </TableBody>
             </Table>
         </Card>

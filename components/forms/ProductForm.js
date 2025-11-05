@@ -3,7 +3,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { suppliersService } from "@/services/suppliers";
 import { packagesService } from "@/services/packages";
+import { photosService } from "@/services/photos";
 
+import ImageCarouselUpload from "@/components/forms/inputs/ImageCarouselUpload";
 import SelectSmart from "@/components/forms/inputs/Select";
 import FormActions from "@/components/forms/inputs/Submit";
 import LabeledInput from "@/components/forms/inputs/Input";
@@ -22,28 +24,13 @@ export default function ProductForm({
         setFormData({ ...formData, [field]: value });
     };
 
-    const handleImageUpload = (e) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                handleChange("image", reader.result);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
-    const handleRemoveImage = () => {
-        handleChange("image", null);
-    };
-
     return (
         <Card>
             <CardHeader>
                 <CardTitle>{isEditMode ? "Editar Produto" : "Criar Produto"}</CardTitle>
             </CardHeader>
             <CardContent>
-                <form onSubmit={onSubmit} className="space-y-6">
+                <div className="space-y-6">
                     <div className="grid gap-6 md:grid-cols-2">
                         <div className="space-y-4">
                             <LabeledInput
@@ -127,57 +114,11 @@ export default function ProductForm({
                             />
                         </div>
 
-                        {/* Right Column - Image Upload
-                        <div className="space-y-2">
-                            <Label>Imagem do produto</Label>
-                            <div className="relative">
-                                {formData.image ? (
-                                    <div className="relative h-64 overflow-hidden rounded-lg border-2 border-border">
-                                        <img
-                                            src={formData.image}
-                                            alt="Preview"
-                                            className="size-full object-cover"
-                                        />
-                                        <Button
-                                            type="button"
-                                            size="icon"
-                                            variant="destructive"
-                                            className="absolute top-2 right-2"
-                                            onClick={handleRemoveImage}
-                                            disabled={loading}
-                                        >
-                                            <XIcon className="size-4" />
-                                        </Button>
-                                    </div>
-                                ) : (
-                                    <label
-                                        htmlFor="image-upload"
-                                        className="flex h-64 cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-border transition-colors hover:border-primary"
-                                    >
-                                        <UploadIcon className="mb-4 size-12 text-muted-foreground" />
-                                        <p className="text-sm text-muted-foreground">
-                                            Clique para adicionar imagem
-                                        </p>
-                                        <input
-                                            id="image-upload"
-                                            type="file"
-                                            accept="image/*"
-                                            className="hidden"
-                                            onChange={handleImageUpload}
-                                            disabled={loading}
-                                        />
-                                    </label>
-                                )}
-                            </div>
-                        </div> */}
+                        <ImageCarouselUpload images={formData.images} />
                     </div>
 
-                    <FormActions
-                        loading={loading}
-                        isEditMode={isEditMode}
-                        onCancel={onCancel}
-                    />
-                </form>
+                    <FormActions onSubmit={onSubmit} onCancel={onCancel} isEditMode={isEditMode} loading={loading} />
+                </div>
             </CardContent>
         </Card>
     );

@@ -12,7 +12,7 @@ export function transformSaleView(sale) {
     return {
         ...sale,
         product: {
-            imageUrl: `${DIRECTUS_BASE_URL}/assets/${sale?.product_id?.photo_ids?.[0]?.directus_files_id}`,
+            imagePath: sale?.product_id?.photo_ids?.[0]?.directus_files_id,
             name: sale?.product_id?.name,
             value: formatarReal(sale?.product_id?.purchase_cost),
             quantity: sale?.units

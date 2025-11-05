@@ -1,9 +1,8 @@
 "use client";
-
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect, cloneElement } from "react";
 import { useNotification } from "@/hooks/useNotification";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 
 export default function FormManager({
     children,
@@ -11,62 +10,83 @@ export default function FormManager({
     queryFn,
     createFn,
     updateFn,
-    itemId = null,
     redirectTo,
     initialData = {},
-    onSuccess
+    onSuccess,
+    messages = {
+        createSuccess: "Item criado com sucesso",
+        updateSuccess: "Item atualizado com sucesso",
+        createError: "Erro ao criar item",
+        updateError: "Erro ao atualizar item",
+    },
 }) {
-    const [formData, setFormData] = useState(initialData);
-    
-    const { success, error } = useNotification();
-    const queryClient = useQueryClient();
-    const isEditMode = Boolean(itemId);
+    const params = useParams();
     const router = useRouter();
+    const queryClient = useQueryClient();
+    const { success, error } = useNotification();
 
+    const [formData, setFormData] = useState(initialData);
+    const isEditMode = Boolean(params.id);
+
+    // Fetch data para modo de edição
     const { data: fetchedData, isLoading: isLoadingData } = useQuery({
-        queryKey: [queryKey, itemId],
-        queryFn: () => queryFn(itemId),
+        queryKey: [queryKey, params.id],
+        queryFn: () => queryFn(params.id),
         enabled: isEditMode && !!queryFn,
     });
 
-    const createMutation = useMutation({
-        mutationFn: createFn,
-        onSuccess: (data) => {
-            queryClient.invalidateQueries({ queryKey: [queryKey] });
-            onSuccess?.(data);
-            if (redirectTo) router.push(redirectTo);
-            success("Create", "Item criado com sucesso")
-        },
-        onError: (e) => {
-            error("Create", "Ops... Ocorreu um erro")
-        },
-    });
-
-    const updateMutation = useMutation({
-        mutationFn: (data) => updateFn(itemId, data),
-        onSuccess: (data) => {
-            queryClient.invalidateQueries({ queryKey: [queryKey] });
-            onSuccess?.(data);
-            if (redirectTo) router.push(redirectTo);
-            success("Update", "Item atualizado com sucesso")
-        },
-        onError: (e) => {
-            error("Update", "Ops... Ocorreu um erro")
-        },
-    });
-
+    // Atualiza formData quando buscar dados
     useEffect(() => {
-        if (fetchedData) setFormData(fetchedData);
+        if (fetchedData) {
+            setFormData(fetchedData);
+        }
     }, [fetchedData]);
 
-    const handleSubmit = (e) => {
-        e?.preventDefault();
-        (isEditMode ? updateMutation : createMutation).mutate(formData);
+    // Handlers de sucesso e erro
+    const handleMutationSuccess = (data, successMessage) => {
+        queryClient.invalidateQueries({ queryKey: [queryKey] });
+        success("Sucesso", successMessage);
+        onSuccess?.(data);
+
+        if (redirectTo) {
+            router.push(redirectTo);
+        }
     };
 
-    const handleCancel = () => redirectTo && router.push(redirectTo);
+    const handleMutationError = (err, errorMessage) => {
+        const message = err?.message || errorMessage;
+        error("Erro", message);
+    };
 
-    return cloneElement(children, {
+    // Mutation para criar
+    const createMutation = useMutation({
+        mutationFn: createFn,
+        onSuccess: (data) => handleMutationSuccess(data, messages.createSuccess),
+        onError: (err) => handleMutationError(err, messages.createError),
+    });
+
+    // Mutation para atualizar
+    const updateMutation = useMutation({
+        mutationFn: (data) => updateFn(params.id, data),
+        onSuccess: (data) => handleMutationSuccess(data, messages.updateSuccess),
+        onError: (err) => handleMutationError(err, messages.updateError),
+    });
+
+    // Handlers do formulário
+    const handleSubmit = (e) => {
+        e?.preventDefault();
+        const mutation = isEditMode ? updateMutation : createMutation;
+        mutation.mutate(formData);
+    };
+
+    const handleCancel = () => {
+        if (redirectTo) {
+            router.push(redirectTo);
+        }
+    };
+
+    // Props injetadas no children
+    const childProps = {
         formData,
         setFormData,
         onSubmit: handleSubmit,
@@ -74,5 +94,7 @@ export default function FormManager({
         loading: isLoadingData || createMutation.isPending || updateMutation.isPending,
         mode: isEditMode ? "edit" : "create",
         error: createMutation.error || updateMutation.error,
-    });
+    };
+
+    return cloneElement(children, childProps);
 }
