@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect, cloneElement } from "react";
 import { useNotification } from "@/hooks/useNotification";
 import { useRouter, useParams } from "next/navigation";
+import { cleanFormData } from "@/utils/cleanFormData";
 
 export default function FormManager({
     children,
@@ -60,14 +61,14 @@ export default function FormManager({
 
     // Mutation para criar
     const createMutation = useMutation({
-        mutationFn: createFn,
+        mutationFn: (data) => createFn(cleanFormData(data)),
         onSuccess: (data) => handleMutationSuccess(data, messages.createSuccess),
         onError: (err) => handleMutationError(err, messages.createError),
     });
 
     // Mutation para atualizar
     const updateMutation = useMutation({
-        mutationFn: (data) => updateFn(params.id, data),
+        mutationFn: (data) => updateFn(params.id, cleanFormData(data)),
         onSuccess: (data) => handleMutationSuccess(data, messages.updateSuccess),
         onError: (err) => handleMutationError(err, messages.updateError),
     });

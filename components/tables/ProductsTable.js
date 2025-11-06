@@ -51,7 +51,7 @@ export function ProductsTable({
                         <TableRow
                             key={item.id} >
                             <TableCell>
-                                <Avatar imagePath={item.image} />
+                                <Avatar imagePath={item.images[0]} />
                             </TableCell>
                             <TableCell className="font-mono text-sm">{item.sku}</TableCell>
                             <TableCell className="font-medium">{item.name}</TableCell>

@@ -3,8 +3,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { suppliersService } from "@/services/suppliers";
 import { packagesService } from "@/services/packages";
-import { photosService } from "@/services/photos";
-
 import ImageCarouselUpload from "@/components/forms/inputs/ImageCarouselUpload";
 import SelectSmart from "@/components/forms/inputs/Select";
 import FormActions from "@/components/forms/inputs/Submit";
@@ -36,7 +34,7 @@ export default function ProductForm({
                             <LabeledInput
                                 id="name"
                                 label="Nome"
-                                placeholder="Digite o nome do fornecedor..."
+                                placeholder="Digite o nome do produto..."
                                 value={formData.name || ""}
                                 onChange={(value) => handleChange("name", value)}
                                 required
@@ -45,7 +43,7 @@ export default function ProductForm({
                             <LabeledInput
                                 id="sku"
                                 label="SKU"
-                                placeholder="Digite o nome do fornecedor..."
+                                placeholder="Digite o SKU..."
                                 value={formData.sku || ""}
                                 onChange={(value) => handleChange("sku", value)}
                                 required
@@ -114,7 +112,10 @@ export default function ProductForm({
                             />
                         </div>
 
-                        <ImageCarouselUpload images={formData.images} />
+                        <ImageCarouselUpload
+                            images={formData.photo_ids || []}
+                            onChange={(images) => handleChange("photo_ids", images)}
+                        />
                     </div>
 
                     <FormActions onSubmit={onSubmit} onCancel={onCancel} isEditMode={isEditMode} loading={loading} />

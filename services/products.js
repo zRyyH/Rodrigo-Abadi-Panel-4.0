@@ -15,7 +15,11 @@ export const productsService = {
         return transformData(data?.data, transformProduct);
     },
     getById: async (id) => {
-        const { data } = await directus.get(`/items/products/${id}`);
+        const params = directusToAxiosParams({
+            fields: ['*.*.*.*'],
+        })
+
+        const { data } = await directus.get(`/items/products/${id}`, { params });
         return data?.data
     },
     create: async (data) => {

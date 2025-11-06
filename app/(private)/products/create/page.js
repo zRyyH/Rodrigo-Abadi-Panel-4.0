@@ -20,10 +20,7 @@ export default function CreateProductPage() {
                     supplier_id: "",
                     cest: "",
                     ncm: "",
-                    images: [
-                        "https://images.unsplash.com/photo-1682687220742-aba13b6e50ba",
-                        "https://images.unsplash.com/photo-1682687221038-404cb8830901",
-                    ]
+                    photo_ids: []
                 }}
             >
                 <ProductForm />
