@@ -1,6 +1,6 @@
 "use client";
 
-import { X, Upload } from "lucide-react";
+import { X, Upload, ImageOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useRef, useState } from "react";
@@ -16,6 +16,7 @@ import { DIRECTUS_BASE_URL } from "@/config/directus";
 export default function ImageCarouselUpload({ images = [], onChange }) {
     const fileInputRef = useRef(null);
     const [uploading, setUploading] = useState(false);
+    const [imageErrors, setImageErrors] = useState({});
 
     const handleRemove = (index) => {
         const newImages = images.filter((_, i) => i !== index);
@@ -61,18 +62,25 @@ export default function ImageCarouselUpload({ images = [], onChange }) {
                             {images.map((image, index) => {
                                 const imageId = typeof image === 'string' ? image : image?.directus_files_id?.id;
                                 const imageUrl = `${DIRECTUS_BASE_URL}/assets/${imageId}`;
-                                console.log(imageUrl, images)
 
                                 return (
                                     <CarouselItem key={index}>
                                         <div className="p-1">
                                             <Card className="overflow-hidden relative">
                                                 <div className="aspect-square relative bg-muted flex items-center justify-center">
-                                                    <img
-                                                        src={imageUrl}
-                                                        alt={`Preview ${index + 1}`}
-                                                        className="object-cover w-full h-full"
-                                                    />
+                                                    {!imageErrors[index] ? (
+                                                        <img
+                                                            src={imageUrl}
+                                                            alt={`Imagem ${index + 1}`}
+                                                            className="object-cover w-full h-full"
+                                                            onError={() => setImageErrors(prev => ({ ...prev, [index]: true }))}
+                                                        />
+                                                    ) : (
+                                                        <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                                                            <ImageOff className="h-12 w-12" />
+                                                            <span className="text-sm">Imagem indisponível</span>
+                                                        </div>
+                                                    )}
                                                     <Button
                                                         type="button"
                                                         variant="destructive"

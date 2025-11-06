@@ -1,6 +1,6 @@
 "use client";
 
-import SupplierForm from "@/components/forms/SupplierForm";
+import SettingsForm from "@/components/forms/settings/SettingsForm";
 import FormManager from "@/components/forms/FormManager";
 import { suppliersService } from "@/services/suppliers";
 
@@ -15,7 +15,7 @@ export default function PackagesPage() {
                 redirectTo="/suppliers"
                 initialData={{ supplier_name: "" }}
             >
-                <SupplierForm />
+                <SettingsForm keyName={"supplier_name"} title={"Fornecedor"} />
             </FormManager>
         </div>
     );

@@ -21,7 +21,7 @@ export default function ProductForm({
     const handleChange = (field, value) => {
         setFormData({ ...formData, [field]: value });
     };
-
+    
     return (
         <Card>
             <CardHeader>
@@ -72,7 +72,7 @@ export default function ProductForm({
                                 placeholder="Selecionar embalagem..."
                                 queryKey="packages"
                                 service={packagesService.getAll}
-                                value={formData.package_id}
+                                value={formData?.package_id}
                                 onValueChange={(e) => handleChange("package_id", e)}
                                 valueKey="id"
                                 labelKey="type_of_packaging"
@@ -85,7 +85,7 @@ export default function ProductForm({
                                 placeholder="Selecionar fornecedor..."
                                 queryKey="suppliers"
                                 service={suppliersService.getAll}
-                                value={formData.supplier_id}
+                                value={formData?.supplier_id}
                                 onValueChange={(e) => handleChange("supplier_id", e)}
                                 valueKey="id"
                                 labelKey="supplier_name"

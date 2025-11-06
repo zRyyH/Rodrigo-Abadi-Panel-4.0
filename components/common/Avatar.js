@@ -19,9 +19,7 @@ export default function BaseAvatar({
         lg: "size-24",
         xl: "size-32",
     };
-
-    console.log(imagePath)
-
+    
     return (
         <Avatar className={cn(sizeClasses[size], "rounded-md", className)} {...props}>
             <AvatarImage src={`${DIRECTUS_BASE_URL}/assets/${imagePath}`} alt={name} />

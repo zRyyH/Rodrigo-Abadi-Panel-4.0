@@ -25,11 +25,13 @@ export default function SelectSmart({
         queryFn: service,
     });
 
-    const dataArray = data?.data || []
+    const dataArray = data?.data || [];
     const isDisabled = disabled || isLoading;
     const showError = isError;
     const showEmpty = !isError && !isLoading && dataArray.length === 0;
     const showOptions = !isError && dataArray.length > 0;
+
+    const selectedValue = value?.[valueKey]?.toString() || value?.toString() || "";
 
     return (
         <div className="space-y-2">
@@ -41,7 +43,7 @@ export default function SelectSmart({
             )}
 
             <Select
-                value={value?.toString() || ""}
+                value={selectedValue}
                 onValueChange={onValueChange}
                 disabled={isDisabled}
                 required={required}
@@ -61,13 +63,13 @@ export default function SelectSmart({
                     {showError && (
                         <div className="flex items-center gap-2 p-2 text-sm text-destructive">
                             <AlertCircleIcon className="size-4" />
-                            <span>Failed to load</span>
+                            <span>Falha ao carregar</span>
                         </div>
                     )}
 
                     {showEmpty && (
                         <div className="p-2 text-center text-sm text-muted-foreground">
-                            No options
+                            Sem opções
                         </div>
                     )}
 

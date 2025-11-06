@@ -1,7 +1,7 @@
 "use client";
 
+import SettingsForm from "@/components/forms/settings/SettingsForm";
 import FormManager from "@/components/forms/FormManager";
-import OriginForm from "@/components/forms/OriginForm";
 import { originsService } from "@/services/origins";
 
 export default function OriginPage() {
@@ -15,7 +15,7 @@ export default function OriginPage() {
                 redirectTo="/origins"
                 initialData={{ origin: "" }}
             >
-                <OriginForm />
+                <SettingsForm keyName={"origin"} title={"Origem"}/>
             </FormManager>
         </div>
     );

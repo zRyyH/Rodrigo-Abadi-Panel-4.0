@@ -1,7 +1,7 @@
 "use client";
 
+import SettingsForm from "@/components/forms/settings/SettingsForm";
 import FormManager from "@/components/forms/FormManager";
-import PackageForm from "@/components/forms/PackageForm";
 import { packagesService } from "@/services/packages";
 
 export default function PackagesPage() {
@@ -15,7 +15,7 @@ export default function PackagesPage() {
                 redirectTo="/packages"
                 initialData={{ type_of_packaging: "" }}
             >
-                <PackageForm />
+                <SettingsForm keyName={"type_of_packaging"} title={"Embalagem"} />
             </FormManager>
         </div>
     );
