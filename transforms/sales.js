@@ -9,8 +9,16 @@ export function transformSale(sale) {
 };
 
 export function transformSaleView(sale) {
+    const xml_id = sale?.nfe_id?.xml_id?.id
+    const pdf_id = sale?.nfe_id?.pdf_id?.id
+
+    const xml_url = xml_id ? `${DIRECTUS_BASE_URL}/assets/${sale?.nfe_id?.xml_id?.id}` : undefined
+    const pdf_url = pdf_id ? `${DIRECTUS_BASE_URL}/assets/${sale?.nfe_id?.pdf_id?.id}` : undefined
+
     return {
         ...sale,
+        xml_url: xml_url,
+        pdf_url: pdf_url,
         product: {
             imagePath: sale?.product_id?.photo_ids?.[0]?.directus_files_id,
             name: sale?.product_id?.name,
@@ -18,8 +26,6 @@ export function transformSaleView(sale) {
             quantity: sale?.units
         },
         invoice_number: sale?.nfe_id?.invoice_number,
-        xml_url: `${DIRECTUS_BASE_URL}/assets/${sale?.nfe_id?.xml_id?.id}`,
-        pdf_url: `${DIRECTUS_BASE_URL}/assets/${sale?.nfe_id?.pdf_id?.id}`,
         date: formatarData(sale?.sale_date),
         nfe_key: sale?.nfe_id?.nfe_key,
         product_revenue: formatarReal(sale?.product_revenue),
